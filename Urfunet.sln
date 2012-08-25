@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Urfunet", "Urfunet\Urfunet.vcxproj", "{A64BCF80-634D-4DF8-9893-DE4FD47A10EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibs", "ExternalLibs", "{8C030807-71F1-4C8B-AB4B-1265CA1D17BA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qjson", "ExternalLibs\qjson\src\qjson.vcxproj", "{6F454C75-B795-3559-A2D9-88998DF2852F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,8 +17,15 @@ Global
 		{A64BCF80-634D-4DF8-9893-DE4FD47A10EB}.Debug|Win32.Build.0 = Debug|Win32
 		{A64BCF80-634D-4DF8-9893-DE4FD47A10EB}.Release|Win32.ActiveCfg = Release|Win32
 		{A64BCF80-634D-4DF8-9893-DE4FD47A10EB}.Release|Win32.Build.0 = Release|Win32
+		{6F454C75-B795-3559-A2D9-88998DF2852F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6F454C75-B795-3559-A2D9-88998DF2852F}.Debug|Win32.Build.0 = Debug|Win32
+		{6F454C75-B795-3559-A2D9-88998DF2852F}.Release|Win32.ActiveCfg = Release|Win32
+		{6F454C75-B795-3559-A2D9-88998DF2852F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6F454C75-B795-3559-A2D9-88998DF2852F} = {8C030807-71F1-4C8B-AB4B-1265CA1D17BA}
 	EndGlobalSection
 EndGlobal
