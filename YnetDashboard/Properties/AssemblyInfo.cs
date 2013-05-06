@@ -7,11 +7,11 @@ using System.Windows;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("YnetDashboard")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("[Y]not fs")]
+[assembly: AssemblyDescription("Why not FS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("YnetDashboard")]
+[assembly: AssemblyCompany("LS&DmT")]
+[assembly: AssemblyProduct("[Y] Dash")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -29,18 +29,7 @@ using System.Windows;
 //строка внизу для обеспечения соответствия настройки UICulture в файле проекта.
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
-
-
-[assembly: ThemeInfo(
-    ResourceDictionaryLocation.None, //где расположены словари ресурсов по конкретным тематикам
-    //(используется, если ресурс не найден на странице 
-    // или в словарях ресурсов приложения)
-    ResourceDictionaryLocation.SourceAssembly //где расположен словарь универсальных ресурсов
-    //(используется, если ресурс не найден на странице, 
-    // в приложении или в каких-либо словарях ресурсов для конкретной темы)
-)]
-
-
+ 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
 //      Основной номер версии
