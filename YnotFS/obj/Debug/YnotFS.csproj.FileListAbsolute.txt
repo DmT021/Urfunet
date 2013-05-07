@@ -1,0 +1,10 @@
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\NLog.config
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\YnetFS.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\YnetFS.pdb
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\NLog.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\Newtonsoft.Json.xml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\bin\Debug\NLog.xml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\obj\Debug\YnetFS.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\obj\Debug\YnetFS.pdb
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnotFS\obj\Debug\YnotFS.csprojResolveAssemblyReference.cache

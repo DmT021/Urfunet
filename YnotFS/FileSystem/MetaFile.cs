@@ -39,7 +39,7 @@ namespace YnetFS.FileSystem
         #region DoNtLikeThat REFACTOR
         internal static FileMetaInfo ReadFrom(IFile Ifile)
         {
-            var ret = JsonConvert.DeserializeObject<FileMetaInfo>(File.ReadAllText(Ifile.MetaPath));
+            var ret = JsonConvert.DeserializeObject<FileMetaInfo>(File.ReadAllText(Ifile.MetaPath, Encoding.UTF8));
             ret.ParenFile = Ifile;
             return ret;
         }
@@ -70,7 +70,7 @@ namespace YnetFS.FileSystem
         internal void Save()
         {
             if (File.Exists(ParenFile.MetaPath)) File.Delete(ParenFile.MetaPath);
-            File.WriteAllText(ParenFile.MetaPath, JsonConvert.SerializeObject(this), Encoding.Default);
+            File.WriteAllText(ParenFile.MetaPath, JsonConvert.SerializeObject(this), Encoding.UTF8);
         }
 
         public void SetOwner(Client client)

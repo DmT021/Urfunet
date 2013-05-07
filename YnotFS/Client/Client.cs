@@ -15,38 +15,50 @@ namespace YnetFS
 {
     public class Client 
     {
-        public BaseInteractionEnvironment Environment { get; set; }
+        BaseInteractionEnvironment _Environment = null;
+        public BaseInteractionEnvironment Environment
+        {
+            get
+            {
+                lock (this) { return _Environment; }
+            }
+        }
 
         Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         public Client(string guid=null)
         {
             if (!string.IsNullOrEmpty(guid))
                 _id = Guid.Parse(guid);
+            Logs = new ObservableCollection<string>();
+
             init();
         }
 
-        private void init()
+        public void init()
         {
-
-            LoadSetting();
-
-            Logs = new ObservableCollection<string>();
-
-            //start fs
-            FileSystem = new MockFS(this, Id.ToString());
-
-            //start ie
-            Environment = new MemIE(this);
+            lock (this)
+            {
+                LoadSetting();
 
 
-            Environment.RemoteClientStateChanged += Environment_OnRemoteClientStateChanged;
+                //start fs
+                FileSystem = new MockFS(this, Id.ToString());
 
-            FileSystem.OnFolderEvent += FileSystem_OnFolderEvent;
-            FileSystem.OnFileEvent += FileSystem_OnFileEvent;
+                //start ie
+                _Environment = new MemIE(this);
 
+
+                FileSystem.OnFolderEvent += FileSystem_OnFolderEvent;
+                FileSystem.OnFileEvent += FileSystem_OnFileEvent;
+                On = true;
+            }
             SynckFS();
 
-            On = true;
+        }
+
+        private void Environment_OnReady(object sender, EventArgs e)
+        {
+
         }
 
         private void SynckFS()
@@ -139,6 +151,7 @@ namespace YnetFS
         public ObservableCollection<string> Logs { get; set; }
         public void Log(LogLevel lvl, string msg, params object[] objs)
         {
+            if (objs == null) objs = new List<object>().ToArray();
             var tmp = objs.ToList();
             tmp.Add(this);
             Logger.Log(lvl, msg, tmp.ToArray());
@@ -147,20 +160,15 @@ namespace YnetFS
         public bool On = true;
         public void BeeOff()
         {
-            if (!On) { BeOn(); return; }
-            Logs = new ObservableCollection<string>();
-            Environment.RemoteClientStateChanged -= Environment_OnRemoteClientStateChanged;
             FileSystem.OnFolderEvent -= FileSystem_OnFolderEvent;
             FileSystem.OnFileEvent -= FileSystem_OnFileEvent;
+            Environment.OnReady -= Environment_OnReady;
             FileSystem = null;
-            Environment = null;
+            Environment.Shutdown();
+            _Environment = null;
             On = false;
         }
-        public void BeOn()
-        {
-
-            init();
-        }
+        
     }
 
     [Target("CustomLogTarget")]

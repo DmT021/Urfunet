@@ -1,0 +1,8 @@
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\bin\Debug\Controller.exe.config
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\bin\Debug\Controller.exe
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\bin\Debug\Controller.pdb
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\bin\Debug\Newtonsoft.Json.xml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\obj\Debug\Controller.csprojResolveAssemblyReference.cache
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\obj\Debug\Controller.exe
+C:\Users\LoveSan\Documents\GitHub\Urfunet\Controller\obj\Debug\Controller.pdb

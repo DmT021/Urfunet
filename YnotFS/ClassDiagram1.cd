@@ -1,234 +1,215 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="YnetFS.Client" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="7.75" Y="0.5" Width="1.5" />
+  <Class Name="YnetFS.Client">
+    <Position X="9.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAACCAAIAAICAgABACAAAAAgAAIAAAAAACAAAAAA=</HashCode>
+      <HashCode>AAACAICSAAIAAICAgABAAAQAgAgAAIIAAEAACAAAAIQ=</HashCode>
       <FileName>Client\Client.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="YnetFS.CustomLogTarget" Collapsed="true">
-    <Position X="9.5" Y="0.5" Width="1.5" />
+    <Position X="16.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Client\Client.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.RemoteClient" Collapsed="true">
-    <Position X="0.5" Y="7.5" Width="1.5" />
+    <Position X="16.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAICAAAAAAAAAAAEAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAICAAAAAAAAAAAEAEAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Client\RemoteClient.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="YnetFS.NetworkRemoteClient" Collapsed="true">
-    <Position X="0.5" Y="8.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Client\RemoteClient.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="YnetFS.RemoteClientsCollection" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="9.5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AGIAAkAAAAACABAQCAAAhAQAAAAAAAAACAAAAABQIAA=</HashCode>
-      <FileName>Client\RemoteClientsCollection.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="YnetFS.FileSystem.FileMetaInfo" Collapsed="true">
-    <Position X="11.25" Y="0.5" Width="1.5" />
+    <Position X="18.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAICAICIAAIAAAAAAAAAAEAgAAAAAAAAAAABAAAIAAA=</HashCode>
+      <HashCode>IAICAICIAAIAAAAAAAAAAEQgAAAAAAAAAAABAAAIAAA=</HashCode>
       <FileName>FileSystem\MetaFile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.FileSystem.Mock.MockFile" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="9.5" Y="1.5" Width="1.5" />
+    <Position X="14.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAACAAAAEAAAAAAQAgAAAACAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAAACAAAAEAAAAAAQQgABAACAAAAAAAAAAAAA=</HashCode>
       <FileName>FileSystem\Mock\File.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="YnetFS.FileSystem.Mock.MockDirectory" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="7.75" Y="1.5" Width="1.5" />
+  <Class Name="YnetFS.FileSystem.Mock.MockFolder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAICACAAEAAAAAAQAAAAAACAAAAAAAgAAAIA=</HashCode>
+      <HashCode>AAAAAAFAAICACAAEAAAAAAQAAABAACAAAAAAAgAAAIA=</HashCode>
       <FileName>FileSystem\Mock\Folder.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="YnetFS.FileSystem.Mock.MockFS" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="11.25" Y="1.5" Width="1.5" />
+    <Position X="18.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAACgAiEAAAAAAgAAAQAgAAAAKAAAgAAAABFAAA=</HashCode>
+      <HashCode>AAABAEACgACGAAAAAAgAAAQAhAFAACAAAoAAAABEAAA=</HashCode>
       <FileName>FileSystem\Mock\FS.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="YnetFS.InteractionEnvironment.MemoryIE" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="13" Y="0.5" Width="1.5" />
+  <Class Name="YnetFS.InteractionEnvironment.BaseInteractionEnvironment" Collapsed="true">
+    <Position X="12.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAEAACAAGABAAAAAABAIAAEAAAIAAAAAAA=</HashCode>
+      <HashCode>AAAIAKAAAAAOAAAAAEAAAAAAABBAYAAMAAApDAAAAQA=</HashCode>
+      <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YnetFS.InteractionEnvironment.Task" Collapsed="true">
+    <Position X="18.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YnetFS.InteractionEnvironment.MemIE" Collapsed="true">
+    <Position X="15" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAACAAAAAGAAAAAAAABAAAAAAAAIAAAAAAA=</HashCode>
       <FileName>InteractionEnvironment\MemoryIE.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="YnetFS.InteractionEnvironment.NetworkSettings" Collapsed="true">
-    <Position X="7.75" Y="2.5" Width="1.5" />
+    <Position X="14.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAAAAA=</HashCode>
       <FileName>InteractionEnvironment\NetworkIE.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="YnetFS.InteractionEnvironment.NetworkIE" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="13" Y="1.5" Width="1.5" />
+  <Class Name="YnetFS.InteractionEnvironment.NetworkIE" Collapsed="true">
+    <Position X="13.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQBAEAAAACAEAACAAEACAAAAJABIIACAAAAAAAAAEAI=</HashCode>
+      <HashCode>AQBAEIAAAAACAAAAAEACAAAAJAAIAACAAAAAAAAAEAI=</HashCode>
       <FileName>InteractionEnvironment\NetworkIE.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YnetFS.Messages.DeleteFSObjMessage" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Messages\DeleteFileMessage.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.Messages.Message" Collapsed="true">
-    <Position X="3" Y="0.5" Width="1.5" />
+    <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEACAAAAAAAAAAAgAAABABAAAhAAAQAAQEAAAAA=</HashCode>
+      <HashCode>AAAAAEBCAAAAAAAAAAAgAAAAABAAAhAAAQAAQEAAAAA=</HashCode>
       <FileName>Messages\IMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="YnetFS.Messages.SynchMessage" Collapsed="true">
-    <Position X="0.75" Y="1.75" Width="1.5" />
+  <Class Name="YnetFS.Messages.SynchMessage_mock" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAABAgAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Messages\IMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.Messages.NetworkMessage" Collapsed="true">
-    <Position X="4" Y="1.75" Width="1.5" />
+    <Position X="4.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAEAAAAA=</HashCode>
-      <FileName>Messages\IMessage.cs</FileName>
+      <FileName>Messages\NetworkMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.Messages.mHello" Collapsed="true">
-    <Position X="3" Y="3.25" Width="1.5" />
+    <Position X="3.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
-      <FileName>Messages\IMessage.cs</FileName>
+      <FileName>Messages\NetworkMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="YnetFS.Messages.mHI" Collapsed="true">
-    <Position X="5.25" Y="3.25" Width="1.5" />
+    <Position X="5.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
-      <FileName>Messages\IMessage.cs</FileName>
+      <FileName>Messages\NetworkMessage.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="YnetFS.IClient" Collapsed="true">
-    <Position X="7.75" Y="3.75" Width="1.5" />
+  <Class Name="YnetFS.Messages.NewFileMessage" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAACCAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
-      <FileName>Client\IClient.cs</FileName>
+      <HashCode>AAAAAABAAAAACAAAAAAAAAAAAABAAIAAAAAAAEAAAAA=</HashCode>
+      <FileName>Messages\NewFileMessage.cs</FileName>
     </TypeIdentifier>
-  </Interface>
-  <Interface Name="YnetFS.IRemoteClient" Collapsed="true">
-    <Position X="11.25" Y="3.75" Width="1.5" />
+  </Class>
+  <Class Name="YnetFS.Messages.NewFolderMessage" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Client\IClient.cs</FileName>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAQAAABAAAAIAAAAAEAAAAA=</HashCode>
+      <FileName>Messages\NewFolderMessage.cs</FileName>
     </TypeIdentifier>
-  </Interface>
-  <Interface Name="YnetFS.IRemoteClientsCollection" Collapsed="true">
-    <Position X="13" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Client\IClient.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
+  </Class>
   <Interface Name="YnetFS.FileSystem.IFSObject" Collapsed="true">
-    <Position X="3" Y="4.5" Width="1.5" />
+    <Position X="4.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAAAAQAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAQAAABAACAAAAAAAAAAAAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="YnetFS.FileSystem.IFileSystem" Collapsed="true">
-    <Position X="0.75" Y="5.75" Width="1.5" />
+    <Position X="7.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAACgAgAAAAAAAgAAAAAAAAAAAAAAgAAAABBAAA=</HashCode>
+      <HashCode>AAABAAACgAACAAAAAAgAAAAABAEAAAAAAgAAAABAAAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="YnetFS.FileSystem.IFile" Collapsed="true">
-    <Position X="3" Y="5.75" Width="1.5" />
+    <Position X="3.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="YnetFS.FileSystem.IDirectory" Collapsed="true">
-    <Position X="5.25" Y="5.75" Width="1.5" />
+  <Interface Name="YnetFS.FileSystem.IFolder" Collapsed="true">
+    <Position X="5.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <HashCode>AAAAAABAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="YnetFS.InteractionEnvironment.IInteractionEnvironment">
-    <Position X="9.5" Y="3.75" Width="1.5" />
+  <Enum Name="YnetFS.FileSystem.IFSObjectEvents" Collapsed="true">
+    <Position X="14.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAEAACAAEAAAAAAAABAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Enum Name="YnetFS.FileSystem.IFileEvents" Collapsed="true">
-    <Position X="9.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAgAACAAAAAAAAAAABAQABBAAAAAAAIAAAAAAAAA=</HashCode>
-      <FileName>FileSystem\IFileSystem.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="YnetFS.FileSystem.IDirectoryEvents" Collapsed="true">
-    <Position X="7.75" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAACAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIgCjAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAQBAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="YnetFS.InteractionEnvironment.RemoteClientState" Collapsed="true">
-    <Position X="11.25" Y="4.75" Width="1.5" />
+    <Position X="16.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgEAABA=</HashCode>
       <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Delegate Name="YnetFS.FileSystem.FileEventHandler" Collapsed="true">
-    <Position X="11.25" Y="5.75" Width="1.5" />
+    <Position X="18.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAgAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Delegate>
-  <Delegate Name="YnetFS.FileSystem.DirectoryEventHandelr" Collapsed="true">
-    <Position X="7.75" Y="5.75" Width="1.5" />
+  <Delegate Name="YnetFS.FileSystem.FolderEventHandelr" Collapsed="true">
+    <Position X="14.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>FileSystem\IFileSystem.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="YnetFS.InteractionEnvironment.dRemoteClientStateChanged" Collapsed="true">
-    <Position X="9.5" Y="5.75" Width="1.5" />
+    <Position X="16.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAADAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAIAAA=</HashCode>
       <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
     </TypeIdentifier>
   </Delegate>
-  <Delegate Name="YnetFS.InteractionEnvironment.MessageRecived" Collapsed="true">
-    <Position X="13" Y="5.75" Width="1.5" />
+  <Delegate Name="YnetFS.InteractionEnvironment.dMessageRecived" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>InteractionEnvironment\IInteractionEnvironment.cs</FileName>
     </TypeIdentifier>
   </Delegate>

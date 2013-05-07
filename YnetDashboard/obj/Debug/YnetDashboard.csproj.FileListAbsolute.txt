@@ -1,0 +1,17 @@
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\YnetDashboard.csprojResolveAssemblyReference.cache
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\ClientWindow.baml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\ClientWindow.g.cs
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\YnetDashboard_MarkupCompile.cache
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\YnetDashboard.g.resources
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\YnetDashboard.exe.config
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\NLog.config
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\YnetDashboard.exe
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\YnetDashboard.pdb
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\YnotFS.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\NLog.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\YnotFS.pdb
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\NLog.xml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\bin\Debug\Newtonsoft.Json.xml
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\YnetDashboard.exe
+C:\Users\LoveSan\Documents\GitHub\Urfunet\YnetDashboard\obj\Debug\YnetDashboard.pdb

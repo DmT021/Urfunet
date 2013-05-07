@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using NLog;
 using YnetFS.InteractionEnvironment;
 
 namespace YnetFS
@@ -44,8 +45,9 @@ namespace YnetFS
         {
             if (!IsOnline())
             {
-                Env.EmitRemoteClientStateChanged(this, RemoteClientState.Connected, RemoteClientState.Disconnected);
-                throw new Exception("Client is Offline");
+                Env.ParentClient.Log(LogLevel.Error, "cant send message to {0}", this);
+                Env.RemoveRemoteClient(this);
+                return;
             }
 
             message.FromId= Env.ParentClient.Id;

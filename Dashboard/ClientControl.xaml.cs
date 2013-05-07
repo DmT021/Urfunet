@@ -83,6 +83,8 @@ namespace Dashboard
                     {
                         RemoteClients.Remove(c as RemoteClient);
                     }
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+                    RemoteClients.Clear();
             }), null);
         }
         public q Selected { get; set; }
@@ -143,7 +145,16 @@ namespace Dashboard
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            c.BeeOff();
+            if (c.On)
+                c.BeeOff();
+            else
+            {
+                c.init();
+                RemoteClients.Clear();
+                foreach (var it in c.RemoteClients) RemoteClients.Add(it);
+                c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
+            }
+
         }
 
         

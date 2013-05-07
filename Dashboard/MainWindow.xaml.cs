@@ -37,9 +37,7 @@ namespace Dashboard
         static int i = 1;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var str = string.Format("{0}{0}{0}{0}{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}-{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}{0}", i);
-            i++;
-            Clients.Add(new ClientWindow(new Client(str)));
+            Clients.Add(new ClientWindow(new Client(new Guid((i++)*10000, 0, 0, new byte[8]).ToString())));
         }
         public System.Collections.ObjectModel.ObservableCollection<ClientWindow> Clients { get; set; }
     }

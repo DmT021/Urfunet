@@ -12,7 +12,6 @@ namespace YnetFS.InteractionEnvironment
 {
     public enum RemoteClientState
     {
-        None,
         Connected,
         Disconnected,
         Unknown
@@ -32,7 +31,8 @@ namespace YnetFS.InteractionEnvironment
         protected volatile bool m_stop = false;
         protected readonly EventWaitHandle m_signal = new EventWaitHandle(false, EventResetMode.AutoReset);
 
-        public ObservableCollection<RemoteClient> RemoteClients { get; set; }
+        internal ObservableCollection<RemoteClient> RemoteClients { get; set; }
+        
 
         bool _ie_ready = false;
         protected bool ie_ready
@@ -45,16 +45,35 @@ namespace YnetFS.InteractionEnvironment
             }
         }
 
+        public event EventHandler OnReady;
+
         public BaseInteractionEnvironment(Client ParentClient)
         {
             RemoteClients = new ObservableCollection<RemoteClient>();
+            RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
             this.ParentClient = ParentClient;
             MessageRecived += OnMessageRecived;
-            RemoteClientStateChanged += OnRemoteClientStateChanged;
-            new Thread(LoopTask).Start();
-            new Thread(HeartBeat).Start();
-
+            new Thread(LoopTask) { Name=ParentClient.Id.ToString().Substring(0,5)+": LoolpTask"}.Start();
+            new Thread(HeartBeat) { Name = ParentClient.Id.ToString().Substring(0, 5) + ": HeartBit" }.Start();
             BootStrap();
+            if (OnReady != null) OnReady(this, new EventArgs());
+        }
+
+        protected virtual void RemoteClients_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems!=null)
+                foreach (RemoteClient r in e.NewItems)
+                {
+                    ParentClient.Log(LogLevel.Info, "Client {0} connected",r);
+                }
+            if (e.OldItems != null)
+                foreach (RemoteClient r in e.OldItems)
+                {
+                    ParentClient.Log(LogLevel.Info, "Client {0} disconnected",r);
+                }
+            if (e.Action==System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+                ParentClient.Log(LogLevel.Info, "all clients disconnected");
+
         }
 
         private void HeartBeat(object obj)
@@ -65,24 +84,27 @@ namespace YnetFS.InteractionEnvironment
                 if (m_stop)
                     break;
 
-                lock (RemoteClients)
+                lock (RemoteClients) //pign each remote clients and remove disconnected
                 {
-
-                    var checklist = new List<RemoteClient>();
-                    foreach (var it in RemoteClients) checklist.Add(it);
-                    foreach (var r in checklist)
+                    var disconnected = new List<RemoteClient>();
+                    foreach (var r in RemoteClients)
                     {
                         var hbres = CheckRemoteClientState(r);
-                        if (hbres == RemoteClientState.Disconnected)
-                            EmitRemoteClientStateChanged(r, RemoteClientState.Connected, RemoteClientState.Disconnected);
+                        if (hbres != RemoteClientState.Connected)
+                            disconnected.Add(r);
                     }
+                    foreach (var r in disconnected)
+                        RemoteClients.Remove(r);
+                        //EmitRemoteClientStateChanged(r, RemoteClientState.Connected, RemoteClientState.Disconnected);
                 }
 
                 Thread.Sleep(HeartBeatInterval);
             }
         }
 
-
+        /// <summary>
+        /// method to start up interation environment. find other instances e.t.c
+        /// </summary>
         public abstract void BootStrap();
 
 
@@ -94,28 +116,7 @@ namespace YnetFS.InteractionEnvironment
         public abstract void Send(RemoteClient RemoteClient, Message message);
 
         #region Events
-        //=============================================================================
-        /// <summary>
-        /// remote client connected\disconnected
-        /// </summary>
-        public event dRemoteClientStateChanged RemoteClientStateChanged;
-        /// <summary>
-        /// Emmit RemoteClientStateChanged event manually (for external classes)
-        /// </summary>
-        /// <param name="Remoteclient"></param>
-        /// <param name="oldState"></param>
-        /// <param name="newState"></param>
-        public void EmitRemoteClientStateChanged(RemoteClient Remoteclient, RemoteClientState oldState, RemoteClientState newState)
-        {
-            if (RemoteClientStateChanged != null)
-                RemoteClientStateChanged(Remoteclient, oldState, newState);
-        }
-        /// <summary>
-        /// Method, wich called on event invoke (for inherited classes)
-        /// </summary>
-        /// <param name="Remoteclient"></param>
-        /// <param name="oldState"></param>
-        /// <param name="newState"></param>
+       
         //=============================================================================
         public event dMessageRecived MessageRecived;
         public void EmitMessageRecived(RemoteClient fromClient, Message Message)
@@ -141,19 +142,26 @@ namespace YnetFS.InteractionEnvironment
 
                 lock (this)
                 {
-                    while (Tasks.Count > 0)
+                    try
                     {
-                        var t = new Task();
-                        if (Tasks.TryDequeue(out t))
+                        while (Tasks.Count > 0)
                         {
-                            t.Method();
-                            //ParentClient.Log(NLog.LogLevel.Info, t.Name + " complete" );  every message must log his own operating  status
-                        }
-                        else
-                        {
-                            ParentClient.Log(NLog.LogLevel.Error, "deque fail");
+                            var t = new Task();
+                            if (Tasks.TryDequeue(out t))
+                            {
+                                t.Method();
+                                //ParentClient.Log(NLog.LogLevel.Info, t.Name + " complete" );  every message must log his own operating  status
+                            }
+                            else
+                            {
+                                ParentClient.Log(NLog.LogLevel.Error, "deque fail");
 
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        ParentClient.Log(LogLevel.Fatal, ex.Message, null);
                     }
                 }
             }
@@ -172,29 +180,44 @@ namespace YnetFS.InteractionEnvironment
         }
 
 
-        public virtual void OnRemoteClientStateChanged(RemoteClient Remoteclient, RemoteClientState oldState, RemoteClientState newState) {
+   
+
+        public abstract RemoteClientState CheckRemoteClientState(RemoteClient rc);
+
+        public virtual void Shutdown()
+        {
+            m_stop = true;
+            m_signal.Set();
 
             lock (RemoteClients)
             {
-                if (Remoteclient.Id == ParentClient.Id) return;
-
-                if (newState == RemoteClientState.Connected)
-                {
-                    RemoteClients.Add(Remoteclient);
-                }
-
-                if (newState == RemoteClientState.Disconnected)
-                {
-                    RemoteClients.Remove(Remoteclient);
-                }
+                RemoteClients.Clear();
+                RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged; 
             }
-
-
-            ParentClient.Log(LogLevel.Info, "Client {0} {1}", Remoteclient, newState);
-
+            RemoteClients = null;
+            MessageRecived -= OnMessageRecived;
+            ParentClient.Log(LogLevel.Info, "Env shutdown complete");
         }
 
-        public abstract RemoteClientState CheckRemoteClientState(RemoteClient rc);
+        internal void RemoveRemoteClient(RemoteClient client)
+        {
+            lock (RemoteClients)
+            {
+                RemoteClients.Add(client);
+            }
+        }
+        internal void AddRemoteClient(RemoteClient client)
+        {
+            lock (RemoteClients)
+            {
+                if (RemoteClients.Contains(client))
+                    RemoteClients.Remove(client);
+            }
+        }
+        public bool HasRemoteClient(Guid id)
+        {
+            lock (RemoteClients) return RemoteClients.Any(x=>x.Id==id);
+        }
     }
 
 

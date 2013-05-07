@@ -1,0 +1,307 @@
+04.05.2013 05:08:35 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:08:35 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:08:35 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:08:35 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:08:35 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:10:37 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:10:37 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:10:37 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:10:37 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:10:55 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:11:06 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:11:06 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:11:08 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:12:19 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:12:19 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:14:30 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:14:30 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:14:34 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:14:35 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:14:35 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:14:35 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:14:35 (INFO): File "titanhost vds.txt" remote_create. 
+04.05.2013 05:14:53 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:14:53 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:14:58 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:14:58 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:14:58 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:14:58 (INFO): File "ank.txt" remote_create. 
+04.05.2013 05:14:58 (INFO): File "app.js.2013-02-14_062903.bak" remote_create. 
+04.05.2013 05:14:58 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152658.bak" remote_create. 
+04.05.2013 05:14:58 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:14:58 (INFO): Directory "New" created_byRemote. 
+04.05.2013 05:15:15 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:16:14 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152623.bak" local_created. 
+04.05.2013 05:16:14 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:23:00 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:23:00 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:23:00 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:23:00 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:23:00 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:23:00 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:23:00 (INFO): File "titanhost vds.txt" remote_create. 
+04.05.2013 05:23:00 (ERROR): Folder New exists!. 
+04.05.2013 05:23:00 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:23:21 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:23:21 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:23:21 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:23:21 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:23:21 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:23:21 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:23:21 (INFO): File "titanhost vds.txt" remote_create. 
+04.05.2013 05:23:21 (INFO): Folder "New" created_byRemote. 
+04.05.2013 05:23:21 (INFO): File "ank.txt" remote_create. 
+04.05.2013 05:23:21 (INFO): File "app.js.2013-02-14_062903.bak" remote_create. 
+04.05.2013 05:23:21 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152658.bak" remote_create. 
+04.05.2013 05:23:21 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:23:21 (INFO): Folder "New" created_byRemote. 
+04.05.2013 05:23:21 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:23:43 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" local_created. 
+04.05.2013 05:23:43 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:24:33 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:24:33 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:24:33 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:24:33 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:24:33 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:24:33 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:24:33 (INFO): File "titanhost vds.txt" remote_create. 
+04.05.2013 05:24:33 (INFO): Folder "New" created_byRemote. 
+04.05.2013 05:24:33 (INFO): File "ank.txt" remote_create. 
+04.05.2013 05:24:33 (INFO): File "app.js.2013-02-14_062903.bak" remote_create. 
+04.05.2013 05:24:33 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152658.bak" remote_create. 
+04.05.2013 05:24:33 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 05:24:33 (INFO): Folder "New" created_byRemote. 
+04.05.2013 05:24:33 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:25:01 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:25:01 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:25:01 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:25:01 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:25:01 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:25:01 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:25:05 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152706.bak" local_created. 
+04.05.2013 05:25:26 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:25:26 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:25:26 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:25:26 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:25:26 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:25:26 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152706.bak" remote_create. 
+04.05.2013 05:25:26 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:25:40 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" local_created. 
+04.05.2013 05:25:40 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:58:12 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 05:58:12 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 05:58:12 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 05:58:12 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 05:58:12 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" remote_create. 
+04.05.2013 05:58:12 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 05:58:12 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 05:58:19 (INFO): File "index.html.2013-02-10_201546.bak" local_created. 
+04.05.2013 05:58:19 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:29:48 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:29:48 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:29:48 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:29:48 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:29:48 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 07:29:48 (INFO): File "index.html.2013-02-10_201546.bak" remote_create. 
+04.05.2013 07:29:48 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 07:31:03 (INFO): File "app.js.2013-02-14_062903.bak" local_created. 
+04.05.2013 07:31:03 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:34:07 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:34:07 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:34:07 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:34:07 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:34:07 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 07:34:07 (INFO): File "app.js.2013-02-14_062903.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "index.html.2013-02-10_201546.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152706.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "titanhost vds.txt" remote_create. 
+04.05.2013 07:34:07 (INFO): Folder "New" created_byRemote. 
+04.05.2013 07:34:07 (INFO): File "ank.txt" remote_create. 
+04.05.2013 07:34:07 (INFO): File "app.js.2013-02-14_062903.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152658.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 07:34:07 (INFO): Folder "New" created_byRemote. 
+04.05.2013 07:34:07 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 07:34:12 (INFO): File "index.html.2013-02-10_214852.bak" local_created. 
+04.05.2013 07:34:12 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:42:00 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:42:00 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:42:00 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:42:00 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:42:00 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 07:42:00 (INFO): File "index.html.2013-02-10_214852.bak" remote_create. 
+04.05.2013 07:42:00 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 07:42:10 (INFO): File "app.js.2013-02-07_061912.bak" local_created. 
+04.05.2013 07:42:10 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:42:37 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:42:37 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:42:37 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:42:37 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:42:37 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 07:42:37 (INFO): File "app.js.2013-02-07_061912.bak" remote_create. 
+04.05.2013 07:42:37 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 07:42:54 (INFO): File "layout.php.2013-01-17_151849.bak" local_created. 
+04.05.2013 07:43:26 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:44:09 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:44:09 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:47:07 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:47:07 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:48:21 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:48:21 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:59:11 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 07:59:11 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 07:59:11 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 07:59:11 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 07:59:11 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 07:59:11 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:00:13 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:00:13 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:00:13 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:00:13 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:00:13 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:00:13 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:00:34 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:00:34 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:00:34 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:00:34 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:00:34 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:00:34 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:00:57 (INFO): File "new  2.txt.2013-02-13_212454.bak" local_created. 
+04.05.2013 08:00:57 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:17:30 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:17:30 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:17:30 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:17:30 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:17:30 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:17:30 (INFO): File "new  2.txt.2013-02-13_212454.bak" remote_create. 
+04.05.2013 08:17:30 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:19:27 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:19:27 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:19:27 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:19:27 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:19:27 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:19:27 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:19:54 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:19:54 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:19:54 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:19:54 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:19:54 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:19:54 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:20:30 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152804.bak" local_created. 
+04.05.2013 08:20:30 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:22:13 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152804.bak" remote_create. 
+04.05.2013 08:22:13 (INFO): message NewFileMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:22:35 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" local_created. 
+04.05.2013 08:22:35 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:22:38 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" remote_create. 
+04.05.2013 08:22:38 (INFO): message NewFileMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:22:53 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152706.bak" local_created. 
+04.05.2013 08:22:53 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:22:53 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152706.bak" remote_create. 
+04.05.2013 08:22:53 (INFO): message NewFileMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:25:29 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:25:29 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:25:29 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:25:29 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:25:29 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:25:29 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:25:37 (INFO): Folder "New" created_byLocal. 
+04.05.2013 08:33:01 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:33:01 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:34:04 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:34:08 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:34:08 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:34:08 (INFO): Folder "New" remote_created. 
+04.05.2013 08:34:08 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:34:40 (INFO): Folder "New" local_created. 
+04.05.2013 08:34:40 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:38:46 (ERROR): Folder New exists!. 
+04.05.2013 08:38:46 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:38:58 (ERROR): Folder New exists!. 
+04.05.2013 08:39:06 (INFO): Folder "New" local_created. 
+04.05.2013 08:39:06 (INFO): Message NewFolderMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:39:08 (ERROR): Folder New exists!. 
+04.05.2013 08:39:08 (INFO): message NewFolderMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:39:30 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:39:30 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:39:30 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:39:30 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:39:30 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:39:30 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:39:47 (INFO): Folder "New" local_created. 
+04.05.2013 08:39:47 (INFO): Message NewFolderMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:39:47 (INFO): Folder "New" remote_created. 
+04.05.2013 08:39:47 (INFO): message NewFolderMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:39:56 (INFO): Folder "New" local_created. 
+04.05.2013 08:39:56 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:39:56 (ERROR): Folder New exists!. 
+04.05.2013 08:39:56 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:40:16 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:40:16 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:40:17 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:40:17 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:40:17 (INFO): Folder "New" remote_created. 
+04.05.2013 08:40:17 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:40:17 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:40:40 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:40:40 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:40:40 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:40:40 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:40:40 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:40:40 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:40:43 (INFO): Folder "New" local_created. 
+04.05.2013 08:40:43 (INFO): Message NewFolderMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:40:45 (INFO): Folder "New" remote_created. 
+04.05.2013 08:40:45 (INFO): message NewFolderMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:40:52 (INFO): Folder "New" local_created. 
+04.05.2013 08:40:52 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:41:20 (ERROR): Folder New exists!. 
+04.05.2013 08:41:20 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:42:06 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:42:06 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:42:06 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:42:06 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:42:06 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:42:06 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:42:27 (INFO): Folder "New" local_created. 
+04.05.2013 08:42:27 (INFO): Message NewFolderMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:42:30 (INFO): Folder "New" remote_created. 
+04.05.2013 08:42:30 (INFO): message NewFolderMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:42:36 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" local_created. 
+04.05.2013 08:42:36 (INFO): Message NewFileMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:42:36 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152754.bak" remote_create. 
+04.05.2013 08:42:36 (INFO): message NewFileMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:45:09 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:45:09 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:45:09 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:45:09 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:45:09 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:45:09 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:45:14 (INFO): Folder "New" local_created. 
+04.05.2013 08:45:14 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:45:14 (INFO): Folder "New" remote_created. 
+04.05.2013 08:45:14 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:45:16 (INFO): Folder "New" local_created. 
+04.05.2013 08:45:16 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:49:05 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:49:05 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:49:36 (INFO): ed053226-8930-47d6-acfa-29a745314e02 discoverd. 
+04.05.2013 08:49:36 (INFO): Client 5009b6ab-cd1f-416a-b259-2a1300a529ac Connected. 
+04.05.2013 08:49:36 (INFO): Message SynchMessage_mock to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:49:36 (INFO): Message SynchMessage_mock to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:49:36 (INFO): message SynchMessage_mock from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:49:36 (INFO): message SynchMessage_mock from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 
+04.05.2013 08:49:40 (INFO): Folder "New" local_created. 
+04.05.2013 08:49:40 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:49:40 (INFO): Folder "New" remote_created. 
+04.05.2013 08:49:40 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:49:42 (INFO): Folder "New" local_created. 
+04.05.2013 08:49:42 (INFO): Message NewFolderMessage to 5009b6ab-cd1f-416a-b259-2a1300a529ac sended complete. 
+04.05.2013 08:49:42 (INFO): Folder "New" remote_created. 
+04.05.2013 08:49:42 (INFO): message NewFolderMessage from ed053226-8930-47d6-acfa-29a745314e02 recived complete. 
+04.05.2013 08:49:46 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152605.bak" local_created. 
+04.05.2013 08:49:46 (INFO): Message NewFileMessage to ed053226-8930-47d6-acfa-29a745314e02 sended complete. 
+04.05.2013 08:49:46 (INFO): File "jquery.dataTables.tableTools.js.2013-02-13_152605.bak" remote_create. 
+04.05.2013 08:49:46 (INFO): message NewFileMessage from 5009b6ab-cd1f-416a-b259-2a1300a529ac recived complete. 

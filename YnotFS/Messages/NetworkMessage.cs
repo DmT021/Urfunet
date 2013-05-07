@@ -21,10 +21,10 @@ namespace YnetFS.Messages
     {
         public override void OnRecived(RemoteClient from, Client to)
         {
-            if (!Environment.RemoteClients.Any(z=>z.Id==FromId))
+            if (!Environment.HasRemoteClient(FromId))
             {
                 var client = new RemoteClient(FromId, Environment);
-                Environment.EmitRemoteClientStateChanged(client,InteractionEnvironment.RemoteClientState.Unknown,InteractionEnvironment.RemoteClientState.Connected);
+                Environment.AddRemoteClient(client);
                 client.Send(new mHI());
             }
         }
@@ -34,10 +34,11 @@ namespace YnetFS.Messages
     {
         public override void OnRecived(RemoteClient from, Client to)
         {
-            if (!Environment.RemoteClients.Any(z => z.Id == FromId))
+            if (!Environment.HasRemoteClient(FromId))
             {
                 var client = new RemoteClient(FromId, Environment);
-                Environment.EmitRemoteClientStateChanged(client, InteractionEnvironment.RemoteClientState.Unknown, InteractionEnvironment.RemoteClientState.Connected);
+                Environment.RemoveRemoteClient(client);
+
             }
         }
     }
