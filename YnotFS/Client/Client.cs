@@ -39,6 +39,7 @@ namespace YnetFS
             lock (this)
             {
                 LoadSetting();
+                On = true;
 
 
                 //start fs
@@ -46,13 +47,11 @@ namespace YnetFS
 
                 //start ie
                 _Environment = new MemIE(this);
-
+                _Environment.RemoteClients.CollectionChanged += Environment_OnRemoteClientStateChanged;
 
                 FileSystem.OnFolderEvent += FileSystem_OnFolderEvent;
                 FileSystem.OnFileEvent += FileSystem_OnFileEvent;
-                On = true;
             }
-            SynckFS();
 
         }
 
@@ -61,46 +60,44 @@ namespace YnetFS
 
         }
 
-        private void SynckFS()
-        {
-            foreach (var r in RemoteClients)
-            {
-                r.Send(new SynchMessage_mock());
-            }
-        }
-
         void FileSystem_OnFileEvent(IFile srcFile, IFSObjectEvents eventtype)
         {
-            if (eventtype == IFSObjectEvents.local_created)
+            lock (RemoteClients)
             {
-                foreach (var r in RemoteClients)
+                if (eventtype == IFSObjectEvents.local_created)
                 {
-                    r.Send(new NewFileMessage(srcFile));
+                    foreach (var r in RemoteClients)
+                    {
+                        r.Send(new NewFileMessage(srcFile));
+                    }
                 }
-            }
-            if (eventtype == IFSObjectEvents.local_delete)
-            {
-                foreach (var r in RemoteClients)
+                if (eventtype == IFSObjectEvents.local_delete)
                 {
-                    r.Send(new DeleteFSObjMessage(srcFile));
-                }
+                    foreach (var r in RemoteClients)
+                    {
+                        r.Send(new DeleteFSObjMessage(srcFile));
+                    }
+                } 
             }
         }
 
         void FileSystem_OnFolderEvent(IFolder srcFolder, IFSObjectEvents eventtype)
         {
-            if (eventtype == IFSObjectEvents.local_created)
+            lock (RemoteClients)
             {
-                foreach (var r in RemoteClients)
+                if (eventtype == IFSObjectEvents.local_created)
                 {
-                    r.Send(new NewFolderMessage(srcFolder));
+                    foreach (var r in RemoteClients)
+                    {
+                        r.Send(new NewFolderMessage(srcFolder));
+                    }
                 }
-            }
-            if (eventtype == IFSObjectEvents.local_delete)
-            {
-                foreach (var r in RemoteClients)
+                if (eventtype == IFSObjectEvents.local_delete)
                 {
-                    r.Send(new DeleteFSObjMessage(srcFolder));
+                    foreach (var r in RemoteClients)
+                    {
+                        r.Send(new DeleteFSObjMessage(srcFolder));
+                    }
                 }
             }
         }
@@ -110,14 +107,60 @@ namespace YnetFS
             //TODO: Load local settings
         }
 
-        void Environment_OnRemoteClientStateChanged(RemoteClient Remoteclient, RemoteClientState oldState, RemoteClientState newState)
+        void Environment_OnRemoteClientStateChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (newState == RemoteClientState.Connected)
+            if (e.Action==System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                Remoteclient.Send(new SynchMessage_mock());   
+                ///Подключившемуся клиенту должен ответить тот, у кого guid ближайший к текущему сверху 
+                ///если такого нет - клиент с минимальным guid
+                ///имея список всех узлов, исключая подключившийся, проверяем, является ли текущий
+                ///следующим по величине узлом относительно добавившегося
+                ///для определения какой из guid`ов больше - используем его хеш=\
+
+
+                foreach (RemoteClient it in e.NewItems)
+                {
+                    if (IsMeNearestFor(it))
+                        it.Send(new SynchMessage_mock());
+                }
+
             }
         }
 
+
+        /// <summary>
+        /// Determines if this is nearest client for @RemoteClient
+        /// </summary>
+        /// <param name="Remoteclient"></param>
+        /// <returns></returns>
+        private bool IsMeNearestFor(RemoteClient Remoteclient)
+        {
+            var list_to_Find = new List<RemoteClient>();
+            lock (RemoteClients)
+            {
+                foreach (var r in RemoteClients.Where(x => x.IsOnline()))
+                    if (r != Remoteclient)
+                        list_to_Find.Add(r);
+            }
+            if (list_to_Find.Count == 0) return true;
+            list_to_Find = list_to_Find.OrderBy(x => x.Id.GetHashCode()).ToList();
+
+            var rch = Remoteclient.GetHashCode();//remote client hash
+            var mydist = Id.GetHashCode() - rch;
+
+            var best = list_to_Find.FirstOrDefault(x => rch < x.Id.GetHashCode());
+            if (mydist < 0)
+            {
+                if (best != null) return false;
+                var minr = list_to_Find.First();
+                return mydist < minr.Id.GetHashCode() - rch;
+            }
+            else
+            {
+                if (best == null) return true;
+                return mydist < best.Id.GetHashCode() - rch;
+            }
+        }
 
         public FileSystem.IFileSystem FileSystem
         {
@@ -186,5 +229,7 @@ namespace YnetFS
         }
         
     }
+
+ 
 
 }

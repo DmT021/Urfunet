@@ -153,6 +153,9 @@ namespace Dashboard
                 RemoteClients.Clear();
                 foreach (var it in c.RemoteClients) RemoteClients.Add(it);
                 c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
+                var q = new q(c.FileSystem.RootDir);
+                Items = q.Items;
+                N("Items");
             }
 
         }

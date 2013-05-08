@@ -46,7 +46,7 @@ namespace YnetFS
             if (!IsOnline())
             {
                 Env.ParentClient.Log(LogLevel.Error, "cant send message to {0}", this);
-                Env.RemoveRemoteClient(this);
+               // Env.RemoveRemoteClient(this);
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace YnetFS
             Env.Send(this, message);
         }
 
-        private bool IsOnline()
+        public bool IsOnline()
         {
             return Env.CheckRemoteClientState(this)==RemoteClientState.Connected;
         }

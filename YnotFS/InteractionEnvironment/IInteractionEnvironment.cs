@@ -199,14 +199,14 @@ namespace YnetFS.InteractionEnvironment
             ParentClient.Log(LogLevel.Info, "Env shutdown complete");
         }
 
-        internal void RemoveRemoteClient(RemoteClient client)
+        internal void AddRemoteClient (RemoteClient client)
         {
             lock (RemoteClients)
             {
                 RemoteClients.Add(client);
             }
         }
-        internal void AddRemoteClient(RemoteClient client)
+        internal void RemoveRemoteClient(RemoteClient client)
         {
             lock (RemoteClients)
             {

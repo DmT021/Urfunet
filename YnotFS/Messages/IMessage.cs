@@ -94,6 +94,12 @@ namespace YnetFS.Messages
         
         void MergeFolder(IFolder remote, IFolder local)
         {
+            ///процесс сливания (local) папки с (remote) папкой
+            ///1. Добавляем в local файлы из remote
+            ///2. Удаляем из local файлы, отсутствующие в remote
+            ///3. Добавляем в local папки из remote
+            ///4. Удаляем из local папки, отсутствующие в remote
+
             foreach (var it in remote.Files)
             {
                 if (!local.Files.Any(x => x.meta.Id == it.meta.Id))
@@ -102,6 +108,15 @@ namespace YnetFS.Messages
                     Environment.ParentClient.FileSystem.PushFile(local, it.meta,IFSObjectEvents.remote_create);
                 }
             }
+            var tmpfiles = new List<IFile>();
+            foreach (var it in local.Files) tmpfiles.Add(it);
+
+            foreach (var f in tmpfiles)
+            {
+                if (!remote.Files.Any(x => x.meta.Id == f.meta.Id))
+                    Environment.ParentClient.FileSystem.Delete(f, IFSObjectEvents.remote_delete);
+            }
+
             foreach (var it in remote.Folders)
             {
                 if (!local.Folders.Any(x => x.Name == it.Name))
@@ -109,11 +124,15 @@ namespace YnetFS.Messages
                     Environment.ParentClient.FileSystem.CreateFolder(local, it.Name,IFSObjectEvents.remote_create);
                 }
             }
-            foreach (var f in local.Folders)
+            var tmpfolders = new List<IFolder>();
+            foreach (var it in local.Folders) tmpfolders.Add(it);
+            foreach (var f in tmpfolders)
             {
                 var rf = remote.Folders.FirstOrDefault(x => x.Name == f.Name);
                 if (rf!=null)
                     MergeFolder(rf, f);
+                else
+                    Environment.ParentClient.FileSystem.Delete(f, IFSObjectEvents.remote_delete);
             }
         }
 
