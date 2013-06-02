@@ -27,17 +27,18 @@ namespace Dashboard
             DataContext = this;
             Clients = new System.Collections.ObjectModel.ObservableCollection<ClientWindow>();
 
-            Clients.Add(new ClientWindow(new Client("ed053226-8930-47d6-acfa-29a745314e02")));
-            Clients.Add(new ClientWindow(new Client("5009b6ab-cd1f-416a-b259-2a1300a529ac")));
+            Clients.Add(new ClientWindow(new Client("A")));
+            Clients.Add(new ClientWindow(new Client("B")));
 
 
             mytc.SelectedIndex = 0;
         }
 
-        static int i = 1;
+        static char i = 'B';
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Clients.Add(new ClientWindow(new Client(new Guid((i++)*10000, 0, 0, new byte[8]).ToString())));
+            i = (char)(((byte)i)+1);
+            Clients.Add(new ClientWindow(new Client(i.ToString())));
         }
         public System.Collections.ObjectModel.ObservableCollection<ClientWindow> Clients { get; set; }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using NLog;
 using YnetFS.FileSystem;
 using YnetFS.FileSystem.Mock;
 
@@ -15,30 +16,33 @@ namespace YnetFS.Messages
         [JsonProperty]
         public string Name { get; set; }
 
-        private FileSystem.IFolder srcFolder;
+        private BaseFolder srcFolder;
 
-        public NewFolderMessage(FileSystem.IFolder srcFolder)
+        public NewFolderMessage(BaseFolder srcFolder)
         {
             // TODO: Complete member initialization
             this.srcFolder = srcFolder;
         }
         public override void BeforeSend()
         {
-            RelativePath = (srcFolder as MockFolder).ParentFolder.RelativePath;
+            RelativePath = (srcFolder as BaseFolder).ParentFolder.RelativePath;
             this.Name = srcFolder.Name;
         }
 
-        public override void OnRecived(RemoteClient from, Client to)
+        public override void OnRecived(old_RemoteClient from, old_Client to)
         {
             ////check folder exists
 
-           var fs = Environment.ParentClient.FileSystem as MockFS;
-           var fsobj = fs.FindFSObjByRelativePath(RelativePath) as IFolder;
+            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: create folder {0}", Name);
+
+            base.OnRecived(from, to);
+            var fs = Environment.ParentClient.FileSystem;
+           var fsobj = fs.Find(RelativePath) as BaseFolder;
 
            if (fsobj == null)
-               fsobj = Environment.ParentClient.FileSystem.CreateFolder(Environment.ParentClient.FileSystem.RootDir, RelativePath, IFSObjectEvents.remote_create);
+               fsobj = Environment.ParentClient.FileSystem.CreateFolder(Environment.ParentClient.FileSystem.RootDir, RelativePath, FSObjectEvents.remote_create);
 
-           Environment.ParentClient.FileSystem.CreateFolder(fsobj, Name, IFSObjectEvents.remote_create);
+           Environment.ParentClient.FileSystem.CreateFolder(fsobj, Name, FSObjectEvents.remote_create);
         }
     }
 }

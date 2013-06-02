@@ -13,17 +13,17 @@ namespace YnetFS.Messages
         [JsonProperty(PropertyName = "FromIP")]
         public string FromIP { get; set; }
 
-        public override void OnRecived(RemoteClient from, Client to)
+        public override void OnRecived(old_RemoteClient from, old_Client to)
         {
         }
     }
     public class mHello : NetworkMessage
     {
-        public override void OnRecived(RemoteClient from, Client to)
+        public override void OnRecived(old_RemoteClient from, old_Client to)
         {
             if (!Environment.HasRemoteClient(FromId))
             {
-                var client = new RemoteClient(FromId, Environment);
+                var client = new old_RemoteClient(FromId, Environment);
                 Environment.AddRemoteClient(client);
                 client.Send(new mHI());
             }
@@ -32,11 +32,11 @@ namespace YnetFS.Messages
 
     public class mHI : NetworkMessage
     {
-        public override void OnRecived(RemoteClient from, Client to)
+        public override void OnRecived(old_RemoteClient from, old_Client to)
         {
             if (!Environment.HasRemoteClient(FromId))
             {
-                var client = new RemoteClient(FromId, Environment);
+                var client = new old_RemoteClient(FromId, Environment);
                 Environment.RemoveRemoteClient(client);
 
             }
@@ -51,7 +51,7 @@ namespace YnetFS.Messages
              Data = message;
          }
 
-         public override void Invoke(Client c)
+         public override void Invoke(old_Client c)
          {
              c.WriteLog(Data);
          }
@@ -88,7 +88,7 @@ namespace YnetFS.Messages
          }
 
          protected long BlockSize = 5 * 1024 * 1024;//1mb
-         public override void Invoke(Client c)
+         public override void Invoke(old_Client c)
          {
              throw new NotImplementedException();
          }
@@ -109,7 +109,7 @@ namespace YnetFS.Messages
                  length = file.Length;
              }
          }
-         public override void Invoke(Client c)
+         public override void Invoke(old_Client c)
          {
              var r = new Random(DateTime.Now.Millisecond);
              port = r.Next(1100, 1200);
@@ -125,7 +125,7 @@ namespace YnetFS.Messages
                  byte[] buffer = new byte[BlockSize];
                  long receive = 0L;//, length = BitConverter.ToInt64(buffer, 0);
                  var filename = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//Ynet//" + new FileInfo(Data).Name;
-                 using (FileStream writer = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
+                 using (FileStream writer = new FileStream(filename, FileMode.CreateFolder, FileAccess.Write, FileShare.None))
                  {
                      int received;
                      while (receive < length)
@@ -159,7 +159,7 @@ namespace YnetFS.Messages
          }
 
          //отправка
-         public override void Invoke(Client c)
+         public override void Invoke(old_Client c)
          {
              new Thread(() => {
                  try

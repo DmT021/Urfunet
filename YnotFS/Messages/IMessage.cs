@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 using YnetFS.FileSystem;
 using YnetFS.FileSystem.Mock;
 using YnetFS.InteractionEnvironment;
@@ -61,70 +63,80 @@ namespace YnetFS.Messages
         [JsonProperty(PropertyName = "_fromId")]
         public string _fromId { get; set; }
         [JsonIgnore]
-        public Guid FromId { get { return string.IsNullOrEmpty(_fromId) ? Guid.Empty : Guid.Parse(_fromId); } set { _fromId = value.ToString(); } } 
+        public string FromId { get { return _fromId; } set { _fromId = value; } } 
         #endregion
 
         /// <summary>
         /// действие, которое вызывается у клиета по приходу этого сообщения
         /// </summary>
         /// <param name="c"></param>
-        public abstract void OnRecived(RemoteClient from, Client to);
+        public virtual void OnRecived(old_RemoteClient from, old_Client to) { }
 
         public virtual void BeforeSend() { }
 
+        public override string ToString()
+        {
+            return GetType().Name;
+        }
+ 
     }
 
-    public class SynchMessage_mock : Message
+    public class SynchMessage : Message
     {
-        
+        public SynchMessage()
+        {
+        }
+
         [JsonProperty(PropertyName = "RootDir")]
-        public MockFolder RootDir { get; set; }
+        public BaseFolder RootDir { get; set; }
 
         public override void BeforeSend()
         {
-            RootDir = this.Environment.ParentClient.FileSystem.RootDir as MockFolder;
+            RootDir = this.Environment.ParentClient.FileSystem.RootDir;
         }
 
-
-        public override void OnRecived(RemoteClient from, Client to)
+        public override void OnRecived(old_RemoteClient from, old_Client to)
         {
+            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Synch with {0}",from.Id);
+            base.OnRecived(from, to);
             var myroot = Environment.ParentClient.FileSystem.RootDir;
             MergeFolder(RootDir, myroot);
         }
         
-        void MergeFolder(IFolder remote, IFolder local)
+        void MergeFolder(BaseFolder remote, BaseFolder local)
         {
             ///процесс сливания (local) папки с (remote) папкой
             ///1. Добавляем в local файлы из remote
             ///2. Удаляем из local файлы, отсутствующие в remote
             ///3. Добавляем в local папки из remote
             ///4. Удаляем из local папки, отсутствующие в remote
+            ///5. Сверяем хэши файлов
 
             foreach (var it in remote.Files)
             {
                 if (!local.Files.Any(x => x.meta.Id == it.meta.Id))
                 {
                     //craete metafile
-                    Environment.ParentClient.FileSystem.PushFile(local, it.meta,IFSObjectEvents.remote_create);
+                    Environment.ParentClient.FileSystem.AddFile(local, it.meta,FSObjectEvents.remote_create);
                 }
             }
-            var tmpfiles = new List<IFile>();
+            var tmpfiles = new List<BaseFile>();
             foreach (var it in local.Files) tmpfiles.Add(it);
 
             foreach (var f in tmpfiles)
             {
                 if (!remote.Files.Any(x => x.meta.Id == f.meta.Id))
-                    Environment.ParentClient.FileSystem.Delete(f, IFSObjectEvents.remote_delete);
+                    Environment.ParentClient.FileSystem.Delete(f, FSObjectEvents.remote_delete);
             }
 
             foreach (var it in remote.Folders)
             {
                 if (!local.Folders.Any(x => x.Name == it.Name))
                 {
-                    Environment.ParentClient.FileSystem.CreateFolder(local, it.Name,IFSObjectEvents.remote_create);
+                    Environment.ParentClient.FileSystem.CreateFolder(local, it.Name,FSObjectEvents.remote_create);
                 }
             }
-            var tmpfolders = new List<IFolder>();
+            var tmpfolders = new List<BaseFolder>();
             foreach (var it in local.Folders) tmpfolders.Add(it);
             foreach (var f in tmpfolders)
             {
@@ -132,7 +144,17 @@ namespace YnetFS.Messages
                 if (rf!=null)
                     MergeFolder(rf, f);
                 else
-                    Environment.ParentClient.FileSystem.Delete(f, IFSObjectEvents.remote_delete);
+                    Environment.ParentClient.FileSystem.Delete(f, FSObjectEvents.remote_delete);
+            }
+            foreach (var it in local.Files)
+            {
+                var rf = remote.Files.FirstOrDefault(x => x.Name == it.Name);
+
+                if (rf.meta.Hash != it.meta.Hash)
+                {
+                    var m = new EventWaitHandle(false, EventResetMode.AutoReset);
+                    (Environment.ParentClient.GetFileOwner(rf) as old_RemoteClient).Send(new DownloadFileMessage(it, m));
+                }
             }
         }
 

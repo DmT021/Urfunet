@@ -12,11 +12,11 @@ using YnetFS.Messages;
 
 namespace YnetFS.InteractionEnvironment
 {
-    public class MemIE : BaseInteractionEnvironment
+    public class old_MemIE : BaseInteractionEnvironment
     {
-        public static ObservableCollection<Client> Clients = new ObservableCollection<Client>();
+        public static ObservableCollection<old_Client> Clients = new ObservableCollection<old_Client>();
 
-        public MemIE(Client ParentClient)
+        public old_MemIE(old_Client ParentClient)
             : base(ParentClient)
         {
             lock (Clients)
@@ -31,9 +31,9 @@ namespace YnetFS.InteractionEnvironment
             lock (RemoteClients)
             {
                 if (e.NewItems != null)
-                    foreach (Client c in e.NewItems)
+                    foreach (old_Client c in e.NewItems)
                         if (c.Id!=ParentClient.Id)
-                            RemoteClients.Add(new RemoteClient(c.Id, this));
+                            RemoteClients.Add(new old_RemoteClient(c.Id, this));
             }
         }
 
@@ -42,13 +42,13 @@ namespace YnetFS.InteractionEnvironment
             ///просмотр подулюченных клиентов
             //foreach (var it in Clients)
             //    if (OnRemoteClientStateChanged != null)
-            //        OnRemoteClientStateChanged(new RemoteClient(it.Id, this), RemoteClientState.Unknown, RemoteClientState.Connected);
+            //        OnRemoteClientStateChanged(new old_RemoteClient(it.Id, this), RemoteClientState.Unknown, RemoteClientState.Connected);
 
             lock (RemoteClients)
             {
                 foreach (var c in Clients)
                 {
-                    RemoteClients.Add(new RemoteClient(c.Id, this));
+                    RemoteClients.Add(new old_RemoteClient(c.Id, this));
                 } 
             }
             ie_ready = true;
@@ -62,9 +62,9 @@ namespace YnetFS.InteractionEnvironment
             base.Shutdown();
         }
 
-        public override void Send(RemoteClient RemoteClient, Message message)
+        public override void Send(old_RemoteClient RemoteClient, Message message)
         {
-            ///Remote Client must be offline
+            ///Remote old_Client must be offline
             ///this ckeck must be in remoteclient.send
 
             Tasks.Enqueue(new Task(() =>
@@ -83,16 +83,21 @@ namespace YnetFS.InteractionEnvironment
             m_signal.Set();
         }
 
-        public override RemoteClientState CheckRemoteClientState(RemoteClient rc)
+        public override bool CheckRemoteClientState(old_RemoteClient rc)
         {
-            Client c;  
-            //lock (Clients)
+            old_Client c=null;  
+           // lock (Clients)
             {
-                c = Clients.FirstOrDefault(x => x.Id == rc.Id); 
+                for (int i=0;i<Clients.Count;i++)
+                    if (Clients[i].Id == rc.Id)
+                    {
+                        c = Clients[i];
+                        break;
+                    }
             }
-            if (c == null) return RemoteClientState.Unknown;
-            if (c.On) return RemoteClientState.Connected;
-            return RemoteClientState.Disconnected;
+            if (c == null) return false;
+            if (c.On) return true;
+            return false;
         }
  
 

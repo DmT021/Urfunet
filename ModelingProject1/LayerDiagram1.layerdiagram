@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="6a99376f-9722-491f-b430-c16eb13d9bb2" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="f0d00632-422a-4915-8346-c5056e08a63c" name="IE">
+      <references>
+        <reference Id="e36b18e4-80aa-4861-9113-ea7db4dfe2e2" name="IInteractionEnvironment.cs">
+          <ArtifactNode Label="IInteractionEnvironment.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/InteractionEnvironment/IInteractionEnvironment.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.InteractionEnvironment Type=BaseInteractionEnvironment)" Label="BaseInteractionEnvironment" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="c67f92e8-c0e7-4780-933b-45d884f3c027" name="FS">
+      <references>
+        <reference Id="c8d641fa-cce4-48c7-ac8a-923cc87e5a9b" name="BaseFileSystem.cs">
+          <ArtifactNode Label="BaseFileSystem.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/FileSystem/BaseFileSystem.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.FileSystem Type=BaseFileSystem)" Label="BaseFileSystem" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+        <reference Id="9d945d09-fca3-4b63-83a4-45786b11758c" name="File.cs">
+          <ArtifactNode Label="File.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/FileSystem/File.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.FileSystem Type=FileData)" Label="FileData" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.FileSystem Type=BaseFile)" Label="BaseFile" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+        <reference Id="d66b8840-ecee-4098-9db8-7afdac8a6281" name="Folder.cs">
+          <ArtifactNode Label="Folder.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/FileSystem/Folder.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.FileSystem Type=BaseFolder)" Label="BaseFolder" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+        <reference Id="b828bd89-71de-4c77-b7c5-0d042b41e169" name="MetaFile.cs">
+          <ArtifactNode Label="MetaFile.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/FileSystem/MetaFile.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.FileSystem Type=FileMetaInfo)" Label="FileMetaInfo" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="f77724f4-932a-4eef-af4c-79ad8ac4a313" name="client">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="62c4925e-6cd7-45cb-b9a0-e1fbc0985afb" direction="Forward">
+          <layerMoniker Id="c67f92e8-c0e7-4780-933b-45d884f3c027" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="72f9958b-97b4-4cfe-8a83-f9927772eff8" direction="Forward">
+          <layerMoniker Id="f0d00632-422a-4915-8346-c5056e08a63c" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="c7fb3aef-d802-4ee1-bb35-1839d4202a59" name="Client.cs">
+          <ArtifactNode Label="Client.cs" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/Client/Client.cs&quot;)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS Type=Client)" Label="Client" Category="CodeSchema_Class">
+            <LinkCategory Ref="Contains" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="b2efbd08-527e-4402-9b9e-28c53475caf3" name="mess">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="a1016d73-6d1f-43aa-ad6a-47ec577af2e6" direction="Bidirectional">
+          <layerMoniker Id="f77724f4-932a-4eef-af4c-79ad8ac4a313" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="6b7a9ed1-b2d6-48a7-b2cd-64802b9e3fe7" direction="Bidirectional">
+          <layerMoniker Id="f0d00632-422a-4915-8346-c5056e08a63c" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="184ec9c8-5021-486f-b8f7-6e1a574dc961" direction="Forward">
+          <layerMoniker Id="c67f92e8-c0e7-4780-933b-45d884f3c027" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="587e2645-5eb9-43f2-860b-5823a86d4ddb" name="Messages">
+          <ArtifactNode Label="Messages" Category="CodeSchema_ProjectItem" Id="(Assembly=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/YnetFS.csproj&quot; File=&quot;$(PersonalUri)/GitHub/Urfunet/YnotFS/Messages/&quot;)">
+            <Category Ref="ProjectFolder" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=DeleteFSObjMessage)" Label="DeleteFSObjMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=SendFileMessage)" Label="SendFileMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=DownloadFileMessage)" Label="DownloadFileMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=Message)" Label="Message" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=SynchMessage)" Label="SynchMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=mHI)" Label="mHI" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=mHello)" Label="mHello" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=NetworkMessage)" Label="NetworkMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=NewFileMessage)" Label="NewFileMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=UnLockFileMessage)" Label="UnLockFileMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=LockFileMessage)" Label="LockFileMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=FsObjectOperationMessage)" Label="FsObjectOperationMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=UpdateMetaInfoMessage)" Label="UpdateMetaInfoMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Assembly=YnetFS Namespace=YnetFS.Messages Type=NewFolderMessage)" Label="NewFolderMessage" Category="CodeSchema_Class">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+  </layers>
+</layerModel>

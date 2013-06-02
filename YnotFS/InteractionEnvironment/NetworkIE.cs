@@ -23,10 +23,10 @@ namespace YnetFS.InteractionEnvironment
     {
         public IPAddress IP { get; set; }
 
-        public NetworkIE(Client Client):base (Client)
+        public NetworkIE(old_Client Client):base (Client)
         {
             IP = GetCurrentIP();
-            Addresses = new Dictionary<RemoteClient, IPAddress>();
+            Addresses = new Dictionary<old_RemoteClient, IPAddress>();
         }
 
         public override void BootStrap()
@@ -67,7 +67,7 @@ namespace YnetFS.InteractionEnvironment
                     string stringData = Encoding.UTF8.GetString(data, 0, recv);
 
                     Message m = Message.Decode(stringData, this);
-                    if (ParentClient.Id == Guid.Parse(m._fromId)) return;
+                    if (ParentClient.Id == (m._fromId)) return;
                     m.OnRecived(null, ParentClient);
                 }
             }).Start();
@@ -123,7 +123,7 @@ namespace YnetFS.InteractionEnvironment
 
                     if (bytesRead == 0)
                     {
-                        //the client has disconnected from the server
+                        //the client has disconnected sourcelist the server
                         break;
                     }
 
@@ -138,7 +138,7 @@ namespace YnetFS.InteractionEnvironment
 
                 m = Message.Decode(data, this);
 
-                var Id = Guid.Parse(m._fromId);
+                string Id = (m._fromId);
                 if (RemoteClients.Any(x=>x.Id==Id))
                 {
                     var c = RemoteClients.First(x=>x.Id==Id);
@@ -146,7 +146,7 @@ namespace YnetFS.InteractionEnvironment
                 }
                 else
                 {
-                    //DOTO: Inplement message recive from unknown remote client
+                    //DOTO: Inplement message recive sourcelist unknown remote client
 
                 }
             }
@@ -172,22 +172,9 @@ namespace YnetFS.InteractionEnvironment
         }
 
 
-        public Dictionary<RemoteClient, IPAddress> Addresses { get; set; }
+        public Dictionary<old_RemoteClient, IPAddress> Addresses { get; set; }
 
-
- 
-   
-
-        public T CreateMessage<T>() where T : Message, new()
-        {
-            var ret = new T() { Environment = this, _fromId = ParentClient.Id.ToString() };
-            if (ret is NetworkMessage) (ret as NetworkMessage).FromIP = IP.ToString();
-            return ret;
-        }
-
-
-
-        public override void Send(RemoteClient RemoteClient, Message message)
+        public override void Send(old_RemoteClient RemoteClient, Message message)
         {
             if (!(message is NetworkMessage)) throw new Exception("Network IE: Can send only networkmessage");
 
@@ -195,9 +182,9 @@ namespace YnetFS.InteractionEnvironment
             (message as NetworkMessage).FromIP = Addresses[RemoteClient].ToString();
         }
 
-        public override RemoteClientState CheckRemoteClientState(RemoteClient rc)
+        public override bool CheckRemoteClientState(old_RemoteClient rc)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 

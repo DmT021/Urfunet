@@ -366,9 +366,11 @@ namespace Controller
 
     public class mHello : Message
     {
+
         public mHello()
         {
         }
+        
         public override void Invoke(Client c)
         {
             if (!c.Clients.Any(x => x.IP.ToString() == FromIP))

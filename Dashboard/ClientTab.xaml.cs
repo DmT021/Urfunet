@@ -30,10 +30,12 @@ namespace YFSDashBoard
         public ClientWindow(Client c)
         {
             InitializeComponent();
-            
+ 
             myGrid.Children.Add(new ClientControl(c));
-            Header = c.Id.ToString().Substring(0,5);
+            Header = c.Id.ToString();
         }
+
+
     }
 
 }

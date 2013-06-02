@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,10 @@ namespace Dashboard
 
             DataContext = this;
             c = client as Client;
+            c.StateChanged += c_StateChanged;
+
+            cpanel.IsEnabled = c.State==ClientStates.online;
+
             Logs = new ObservableCollection<string>();
 
             foreach (var it in c.Logs) Logs.Add(it);
@@ -50,9 +55,77 @@ namespace Dashboard
             foreach (var it in c.RemoteClients) RemoteClients.Add(it);
             c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
 
-            var q = new q(c.FileSystem.RootDir);
-            Items = q.Items;
+            c.FileSystem.OnFileEvent += (s, de) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    v_curdir = v_curdir;
+                }), null);
+            };
+            label1.Content = c.State.ToString() + "(" + c.Settings.LastOne.ToString() + ")";
+
+            real_curdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            v_curdir = c.FileSystem.RootDir;
+
         }
+        string _real_curdir = "";
+        string real_curdir { get { return _real_curdir; } set {
+            _real_curdir = value;
+            realfiles.ItemsSource = new List<string>{".."}.Union(Directory.GetFiles(real_curdir).Select(x => new FileInfo(x).Name)).Union(Directory.GetDirectories(real_curdir).Select(x => new DirectoryInfo(x).Name));
+            N("");
+        } }
+
+        BaseFolder _v_curdir = null;
+        BaseFolder v_curdir
+        {
+            get { return _v_curdir; }
+            set
+            {
+
+                _v_curdir = value;
+
+                var items = new List<string>();
+                if (value.Name != "\\") items.Add("..");
+                items.AddRange(v_curdir.Items.Select(x => x.Name));
+
+                TvFS.ItemsSource = items;
+                N("");
+            }
+        }
+
+        
+        private void realfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (realfiles.SelectedItem != null)
+            {
+                var newpath = System.IO.Path.Combine(real_curdir,realfiles.SelectedItem.ToString());
+                if (Directory.Exists(newpath))
+                    real_curdir=newpath;
+
+
+            }
+
+        }
+
+
+
+        private void realfiles_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (realfiles.SelectedItem != null)
+                DragDrop.DoDragDrop(realfiles, realfiles.SelectedItem, DragDropEffects.Copy);
+        }
+
+        void c_StateChanged(object sender,ClientStates NewState)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                cpanel.IsEnabled = NewState == ClientStates.online;
+                label1.Content = NewState.ToString() + "(" + c.Settings.LastOne.ToString() + ")";
+
+            }), null);
+        }
+
 
         void Logs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -73,54 +146,33 @@ namespace Dashboard
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (e.NewItems != null)
-                    foreach (var c in e.NewItems)
-                    {
-                        RemoteClients.Insert(0, c as RemoteClient);
-                    }
-                if (e.OldItems != null)
-                    foreach (var c in e.OldItems)
-                    {
-                        RemoteClients.Remove(c as RemoteClient);
-                    }
-                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-                    RemoteClients.Clear();
+                RemoteClients.Clear();
+                foreach (var it in (sender as ICollection<RemoteClient>))
+                    RemoteClients.Add(it);
+                //if (e.NewItems != null)
+                //    foreach (var c in e.NewItems)
+                //    {
+                //        RemoteClients.Insert(0, c as RemoteClient);
+                //    }
+                //if (e.OldItems != null)
+                //    foreach (var c in e.OldItems)
+                //    {
+                //        RemoteClients.Remove(c as RemoteClient);
+                //    }
+                //if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+                //    RemoteClients.Clear();
             }), null);
         }
-        public q Selected { get; set; }
 
 
 
-        public ObservableCollection<q> Items { get; set; }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var si = TvFS.SelectedItem as q;
-
-            var folder = c.FileSystem.RootDir;
-            if (si!=null&&si.obj is IFolder)
-                folder = si.obj as IFolder;
-
-            var ofd = new OpenFileDialog();
-            if (ofd.ShowDialog().HasValue)
-                c.FileSystem.PushFile(folder, ofd.FileName);
-        }
-
+   
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var si = TvFS.SelectedItem as q;
-            var folder = c.FileSystem.RootDir;
-            if (si!=null&&si.obj is IFolder)
-                folder = si.obj as IFolder;
-            c.FileSystem.CreateFolder(folder, "New",IFSObjectEvents.local_created);
+            c.FileSystem.CreateFolder(v_curdir, "New",FSObjectEvents.local_created);
         }
 
-        private void TvFS_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (TvFS.SelectedItem!=null) 
-            Selected = TvFS.SelectedItem as q;
-            N("Selected");
-        }
 
         void N(string p)
         {
@@ -129,122 +181,205 @@ namespace Dashboard
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
+        string selected = string.Empty;
+
+        public string Meta { get; set; }
+
+        private void TvFS_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (TvFS.SelectedItem == null) return;
+            selected = TvFS.SelectedItem.ToString();
+            //update meta info on window
+
+            string str = "";
+            var obj = v_curdir.Items.FirstOrDefault(x=>x.Name==selected);
+            if (obj == null) return;
+            if (obj is BaseFile)
+            {
+                str = JsonConvert.SerializeObject((obj as BaseFile).meta);
+            }
+            if (obj is BaseFolder)
+                str = obj.Name;
+            Meta = JSonPresentationFormatter.Format(str.Substring(1, str.Length - 2));
+            N("Meta");
+        }
+
         private void TvFS_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (Selected == null) return;
-            var f = Selected as IFSObject;
-            if (File.Exists(f.RealPath) || Directory.Exists(f.RealPath))
-                System.Diagnostics.Process.Start(f.RealPath);
+
+            if (selected == "..")
+            {
+                v_curdir = v_curdir.ParentFolder as BaseFolder;
+                return;
+            }
+
+            var pfold = v_curdir.Folders.FirstOrDefault(x => x.Name == selected);
+            if (pfold != null)
+            {
+                v_curdir = pfold;
+                return;
+            }
+
+            var file = v_curdir.Files.FirstOrDefault(x => x.Name == selected);
+            if (file == null) return;
+
+            var opres = file.Open();
+            if (!opres)
+            {
+                MessageBox.Show("Файл открыт на другом узле");
+                return;
+            }
+            var p = new Process();
+            p.EnableRaisingEvents = true;
+            p.StartInfo = new ProcessStartInfo(file.RealPath);
+            p.Exited += (s, q) =>
+            {
+                file.Close();
+            };
+            p.Start();
+
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (Selected == null) return;
-            c.FileSystem.Delete(Selected.obj,IFSObjectEvents.local_delete);
+            if (string.IsNullOrEmpty(selected)) return;
+            var obj = v_curdir.Items.FirstOrDefault(x => x.Name == selected);
+            if (obj != null)
+                c.FileSystem.Delete(obj, FSObjectEvents.local_delete);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (c.On)
-                c.BeeOff();
+            if (c.State == ClientStates.idle || c.State == ClientStates.online)
+                c.ShutDown();
             else
             {
-                c.init();
+                c.Up();
+
                 RemoteClients.Clear();
                 foreach (var it in c.RemoteClients) RemoteClients.Add(it);
                 c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
-                var q = new q(c.FileSystem.RootDir);
-                Items = q.Items;
                 N("Items");
             }
+        }
+
+        private void TvFS_Drop(object sender, DragEventArgs e)
+        {
+            var data = (string)e.Data.GetData(DataFormats.Text);
+            var fromitem = System.IO.Path.Combine(real_curdir, data);
+
+
+            if (Directory.Exists(fromitem))//если это папка
+            {
+                copydir(fromitem, v_curdir);
+            }
+            else
+                c.FileSystem.AddFile(v_curdir, fromitem);
 
         }
 
-        
+        void copydir(string from, BaseFolder to)
+        {
+
+            var newf = to.FS.CreateFolder(to,new DirectoryInfo(from).Name,FSObjectEvents.local_created);
+            foreach (var f in Directory.GetFiles(from))
+                c.FileSystem.AddFile(newf, f);
+            foreach (var f in Directory.GetDirectories(from))
+                copydir(f,newf);
+        }
+
+
+
     }
 
-    public class q : IFSObject
-    {
-        public string Name { get; set; }
-        public q(IFSObject obj)
-        {
-            Items = new ObservableCollection<q>();
-            this.obj = obj;
-            if (obj is IFile)
-                this.Name = (obj as IFile).Name;
 
-            Load();
+    //public class q : IFSObject
+    //{
+    //    public string Name { get; set; }
+    //    public q(IFSObject obj)
+    //    {
+    //        Items = new ObservableCollection<q>();
+    //        this.obj = obj;
+    //        if (obj is BaseFile)
+    //            this.Name = (obj as BaseFile).Name;
 
-
-        }
-
-        void Files_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            ClientControl.myDispatcher.BeginInvoke(new Action(() =>
-            {
-                Items.Clear();
-                Load();
-            }), null);
-        }
-
-        private void Load()
-        {
-            if (obj is IFolder)
-            {
-                var d = obj as IFolder;
-                Name = d.Name;
-
-                foreach (var f in d.Files)
-                    Items.Add(new q(f));
-
-                foreach (var f in d.Folders)
-                    Items.Add(new q(f));
-
-                d.Folders.CollectionChanged += Folders_CollectionChanged;
-                d.Files.CollectionChanged += Files_CollectionChanged;
-            }
-        }
-
-        void Folders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            ClientControl.myDispatcher.BeginInvoke(new Action(() =>
-            {
-                Items.Clear();
-                Load();
-            }), null);
-        }
-        public string MetaPath
-        {
-            get { return obj.MetaPath; }
-        }
-
-        public string RealPath
-        {
-            get { return obj.RealPath; }
-        }
-
-        public IFSObject obj { get; set; }
-        public ObservableCollection<q> Items { get; set; }
-        public string Meta
-        {
-            get
-            {
-                string str = "";
-                if (obj is IFile)
-                {
-                    str = JsonConvert.SerializeObject((obj as IFile).meta);
-                }
-                if (obj is IFolder)
-                    str = obj.Name;
-                return JSonPresentationFormatter.Format(str.Substring(1, str.Length - 2));
-            }
-        }
+    //        Load();
 
 
-        public string RelativePath
-        {
-            get { throw new NotImplementedException(); }
-        }
-    }
+    //    }
+    //    public override string ToString()
+    //    {
+    //        return obj.ToString();
+    //    }
+    //    void Files_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    //    {
+    //        ClientControl.myDispatcher.BeginInvoke(new Action(() =>
+    //        {
+    //                Items.Clear();
+    //                Load();
+    //        }), null);
+    //    }
+
+    //    private void Load()
+    //    {
+    //        if (obj is BaseFolder)
+    //        {
+    //            var d = obj as BaseFolder;
+    //            Name = d.Name;
+
+    //                lock (d.FS)
+    //            {
+    //                foreach (var f in d.Files)
+    //                    Items.Add(new q(f));
+
+    //                foreach (var f in d.Folders)
+    //                    Items.Add(new q(f));
+    //            }
+    //            d.Folders.CollectionChanged += Folders_CollectionChanged;
+    //            d.Files.CollectionChanged += Files_CollectionChanged;
+    //        }
+    //    }
+
+    //    void Folders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    //    {
+    //        ClientControl.myDispatcher.BeginInvoke(new Action(() =>
+    //        {
+    //            Items.Clear();
+    //            Load();
+    //        }), null);
+    //    }
+    //    public string MetaPath
+    //    {
+    //        get { return obj.MetaPath; }
+    //    }
+
+    //    public string RealPath
+    //    {
+    //        get { return obj.RealPath; }
+    //    }
+
+    //    public IFSObject obj { get; set; }
+    //    public ObservableCollection<q> Items { get; set; }
+    //    public string Meta
+    //    {
+    //        get
+    //        {
+    //            string str = "";
+    //            if (obj is BaseFile)
+    //            {
+    //                str = JsonConvert.SerializeObject((obj as BaseFile).meta);
+    //            }
+    //            if (obj is BaseFolder)
+    //                str = obj.Name;
+    //            return JSonPresentationFormatter.Format(str.Substring(1, str.Length - 2));
+    //        }
+    //    }
+
+
+    //    public string RelativePath
+    //    {
+    //        get { throw new NotImplementedException(); }
+    //    }
+    //}
 
 }

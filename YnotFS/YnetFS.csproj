@@ -50,14 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Client\Client.cs" />
+    <Compile Include="Client\Rules.cs" />
+    <Compile Include="jSonPresentationFormatter.cs" />
     <Compile Include="Messages\DeleteFileMessage.cs" />
+    <Compile Include="Messages\DownloadFileMessage.cs" />
     <Compile Include="Messages\NewFolderMessage.cs" />
     <Compile Include="Client\RemoteClient.cs" />
-    <Compile Include="FileSystem\IFileSystem.cs" />
+    <Compile Include="FileSystem\BaseFileSystem.cs" />
     <Compile Include="FileSystem\MetaFile.cs" />
-    <Compile Include="FileSystem\Mock\File.cs" />
-    <Compile Include="FileSystem\Mock\Folder.cs" />
+    <Compile Include="FileSystem\File.cs" />
+    <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="FileSystem\Mock\FS.cs" />
     <Compile Include="InteractionEnvironment\IInteractionEnvironment.cs" />
     <Compile Include="InteractionEnvironment\MemoryIE.cs" />
@@ -71,7 +75,6 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

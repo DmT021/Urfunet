@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Dashboard
+namespace YnetFS
 {
     public class JSonPresentationFormatter
     {
