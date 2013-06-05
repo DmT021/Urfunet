@@ -70,6 +70,10 @@
     <Compile Include="Messages\NetworkMessage.cs" />
     <Compile Include="Messages\NewFileMessage.cs" />
     <Compile Include="Messages\RequestSynch.cs" />
+    <Compile Include="old\old_ baseIE.cs" />
+    <Compile Include="old\old_Client.cs" />
+    <Compile Include="old\old_MemIE.cs" />
+    <Compile Include="old\old_remote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

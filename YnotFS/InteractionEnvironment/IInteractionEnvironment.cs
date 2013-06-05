@@ -15,7 +15,7 @@ namespace YnetFS.InteractionEnvironment
     public delegate void dMessageRecived(RemoteClient fromClient, Message Message);
 
 
-    public abstract class BaseInteractionEnvironment
+    public abstract class BaseInteractionEnvironment:IDisposable
     {
         const int HeartBeatInterval = 5 * 1000;
 
@@ -304,6 +304,20 @@ namespace YnetFS.InteractionEnvironment
             }
         }
 
+        public bool HasReadyNodes(List<RemoteClient> currents)
+        {
+            var idlist = currents.Select(x => x.Id);
+            var files = ParentClient.FileSystem.GetFileList();
+            foreach (var f in files)
+                if (!f.meta.Replics.Any(x => idlist.Contains(x)))
+                    return false;
+            return true;
+        }
+
+        public void Dispose()
+        {
+            Shutdown();
+        }
     }
 
 

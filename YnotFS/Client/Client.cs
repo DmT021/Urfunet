@@ -19,7 +19,7 @@ using YnetFS.Messages;
 namespace YnetFS
 {
     public enum ClientStates { offline, wait_lastone, idle, online }
-    public class Client : INode
+    public class Client : INode,IDisposable
     {
         const int MinClients = 5;
         /// <summary>
@@ -214,7 +214,6 @@ namespace YnetFS
 
         void _Environment_OnIeStateChanged(BaseInteractionEnvironment b, BaseInteractionEnvironment.IEeventType et)
         {
-            throw new NotImplementedException();
         }
 
         internal INode GetFileOwner(BaseFile baseFile)
@@ -273,6 +272,11 @@ namespace YnetFS
             return tmp;
         }
 
+
+        public void Dispose()
+        {
+            Environment.Dispose();
+        }
     }
 
     public class ClientSettings
