@@ -166,17 +166,20 @@ namespace YnetFS
             if (State == ClientStates.wait_lastone && Settings.LastOne)
             {
                 State = ClientStates.idle;
-                UpdateState(); return;
+                UpdateState();
             }
 
             ///если дождались lastone переходим в idle
-            if (State == ClientStates.wait_lastone && RemoteClients.Count(x => x.LastOne) >= 1)
+            else if (State == ClientStates.wait_lastone && RemoteClients.Count(x => x.IsOnline && x.LastOne) >= 1)
             {
                 State = ClientStates.idle;
+                var lo = RemoteClients.First(x => x.IsOnline && x.LastOne);
+                lo.Send(new RequestSynch());
+                UpdateState();
             }
 
             ///если группа набрана - переходим в online и снимаем пометку lastone
-            if (State == ClientStates.idle && RemoteClients.OnlineCount > MinClients)
+            else if (State == ClientStates.idle && RemoteClients.OnlineCount >= MinClients)
             {
                 Log(LogLevel.Info, "Минимальная группа набрана", null);
                 State = ClientStates.online;
@@ -185,9 +188,12 @@ namespace YnetFS
             }
 
             ///если группа рассыпается - переходим в ожидание и помечаем себя как lastone
-            if (State == ClientStates.online && RemoteClients.OnlineCount <= MinClients)
+            else if (State == ClientStates.online && RemoteClients.OnlineCount < MinClients)
             {
                 State = ClientStates.idle;
+            }
+            if (((State == ClientStates.online) || (State == ClientStates.idle)) && RemoteClients.OnlineCount < MinClients)
+            {
                 Settings.LastOne = true;
             }
 

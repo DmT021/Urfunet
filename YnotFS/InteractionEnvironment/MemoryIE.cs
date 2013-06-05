@@ -83,6 +83,12 @@ namespace YnetFS.InteractionEnvironment
             var res = (c.State != ClientStates.offline);
             return res;
         }
+
+        public override void Shutdown()
+        {
+            base.Shutdown();
+            Clients.Remove(ParentClient);
+        }
     }
 
 }
