@@ -70,7 +70,7 @@ namespace YnetFS.Messages
         /// действие, которое вызывается у клиета по приходу этого сообщения
         /// </summary>
         /// <param name="c"></param>
-        public virtual void OnRecived(old_RemoteClient from, old_Client to) { }
+        public virtual void OnRecived(RemoteClient from, Client to) { }
 
         public virtual void BeforeSend() { }
 
@@ -95,7 +95,7 @@ namespace YnetFS.Messages
             RootDir = this.Environment.ParentClient.FileSystem.RootDir;
         }
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Synch with {0}",from.Id);
             base.OnRecived(from, to);
@@ -153,7 +153,7 @@ namespace YnetFS.Messages
                 if (rf.meta.Hash != it.meta.Hash)
                 {
                     var m = new EventWaitHandle(false, EventResetMode.AutoReset);
-                    (Environment.ParentClient.GetFileOwner(rf) as old_RemoteClient).Send(new DownloadFileMessage(it, m));
+                    (Environment.ParentClient.GetFileOwner(rf) as RemoteClient).Send(new DownloadFileMessage(it, m));
                 }
             }
         }

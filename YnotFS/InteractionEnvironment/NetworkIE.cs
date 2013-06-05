@@ -23,10 +23,10 @@ namespace YnetFS.InteractionEnvironment
     {
         public IPAddress IP { get; set; }
 
-        public NetworkIE(old_Client Client):base (Client)
+        public NetworkIE(Client Client):base (Client)
         {
             IP = GetCurrentIP();
-            Addresses = new Dictionary<old_RemoteClient, IPAddress>();
+            Addresses = new Dictionary<RemoteClient, IPAddress>();
         }
 
         public override void BootStrap()
@@ -172,9 +172,9 @@ namespace YnetFS.InteractionEnvironment
         }
 
 
-        public Dictionary<old_RemoteClient, IPAddress> Addresses { get; set; }
+        public Dictionary<RemoteClient, IPAddress> Addresses { get; set; }
 
-        public override void Send(old_RemoteClient RemoteClient, Message message)
+        public override void Send(RemoteClient RemoteClient, Message message)
         {
             if (!(message is NetworkMessage)) throw new Exception("Network IE: Can send only networkmessage");
 
@@ -182,7 +182,7 @@ namespace YnetFS.InteractionEnvironment
             (message as NetworkMessage).FromIP = Addresses[RemoteClient].ToString();
         }
 
-        public override bool CheckRemoteClientState(old_RemoteClient rc)
+        public override bool CheckRemoteClientState(RemoteClient rc)
         {
             return false;
         }

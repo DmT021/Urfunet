@@ -11,14 +11,10 @@ using YnetFS.InteractionEnvironment;
 namespace YnetFS.FileSystem.Mock
 {
 
+  
     public class MockFS : BaseFileSystem
     {
-        public MockFS(old_Client client, string rootpath) : base(rootpath) { }
-
-    }
-    public class newMockFS : BaseFileSystem
-    {
-        public newMockFS(Client client, string rootpath) : base(rootpath) { }
+        public MockFS(Client client, string rootpath) : base(rootpath) { }
 
     }
 }

@@ -26,7 +26,7 @@ namespace YnetFS.Messages
             Meta = srcFile.meta;
         }
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             //check folder exists
 
@@ -54,7 +54,7 @@ namespace YnetFS.Messages
             base.BeforeSend();
             Meta = srcFile.meta;
         }
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: updated meta for {0} from {1}", RelativePath,from.Id);
             base.OnRecived(from, to);
@@ -82,7 +82,7 @@ namespace YnetFS.Messages
                 RelativePath = srcFile.RelativePath;
             base.BeforeSend();
         }
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             base.OnRecived(from, to);
             if (!string.IsNullOrEmpty(RelativePath))
@@ -98,7 +98,7 @@ namespace YnetFS.Messages
     public class LockFileMessage : FsObjectOperationMessage
     {
         public LockFileMessage(BaseFile srcFile) : base(srcFile) { }
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Lock {0}", RelativePath);
             base.OnRecived(from, to);
@@ -108,7 +108,7 @@ namespace YnetFS.Messages
     public class UnLockFileMessage : FsObjectOperationMessage
     {
         public UnLockFileMessage(BaseFile srcFile) : base(srcFile) { }
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Unlock {0}", RelativePath);
             base.OnRecived(from, to);

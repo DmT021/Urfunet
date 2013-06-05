@@ -11,22 +11,21 @@ using YnetFS.Messages;
 
 namespace YnetFS.InteractionEnvironment
 {
-    public delegate void dRemoteClientStateChanged(old_RemoteClient Remoteclient, bool NewState);
-    public delegate void dMessageRecived(old_RemoteClient fromClient, Message Message);
+    public delegate void dRemoteClientStateChanged(RemoteClient Remoteclient, bool NewState);
+    public delegate void dMessageRecived(RemoteClient fromClient, Message Message);
 
- 
 
     public abstract class BaseInteractionEnvironment
     {
-        const int HeartBeatInterval = 5*1000;
+        const int HeartBeatInterval = 5 * 1000;
 
-        public old_Client ParentClient { get; set; }
+        public Client ParentClient { get; set; }
 
         protected volatile bool m_stop = false;
         protected readonly EventWaitHandle m_signal = new EventWaitHandle(false, EventResetMode.AutoReset);
 
-        internal ObservableCollection<old_RemoteClient> RemoteClients { get; set; }
-        
+        internal RemoteClientsManager RemoteClients { get; set; }
+
 
         bool _ie_ready = false;
         protected bool ie_ready
@@ -41,13 +40,13 @@ namespace YnetFS.InteractionEnvironment
 
         public event EventHandler OnReady;
 
-        public BaseInteractionEnvironment(old_Client ParentClient)
+        public BaseInteractionEnvironment(Client ParentClient)
         {
-            RemoteClients = new ObservableCollection<old_RemoteClient>();
-            RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
             this.ParentClient = ParentClient;
+            RemoteClients = new RemoteClientsManager(this);
+            RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
             MessageRecived += OnMessageRecived;
-            new Thread(LoopTask) { Name=ParentClient.Id+": LoolpTask"}.Start();
+            new Thread(LoopTask) { Name = ParentClient.Id + ": LoolpTask" }.Start();
             new Thread(HeartBeat) { Name = ParentClient.Id + ": HeartBit" }.Start();
 
             BootStrap();
@@ -70,7 +69,7 @@ namespace YnetFS.InteractionEnvironment
         /// <param name="to_id"></param>
         /// <param name="sourcelist"></param>
         /// <returns></returns>
-        public bool IsNearest(INode from_id, INode to_id, List<old_RemoteClient> sourcelist)
+        public bool IsNearest(INode from_id, INode to_id, List<RemoteClient> sourcelist)
         {
             //throw new Exception("сломалось!!");    
             ///имея список всех узлов, исключая конечную точку, проверяем, является ли текущий
@@ -78,7 +77,7 @@ namespace YnetFS.InteractionEnvironment
             ///для определения какой из guid`ов больше - используем его хеш=\
             ///
 
-          
+
             var list_to_Find = new List<INode>();
             lock (sourcelist)
             {
@@ -102,7 +101,7 @@ namespace YnetFS.InteractionEnvironment
             else
             {
                 if (best == null) return true;
-                return mydist <  best.hash - rch;
+                return mydist < best.hash - rch;
             }
         }
 
@@ -112,7 +111,7 @@ namespace YnetFS.InteractionEnvironment
         /// <param name="obj"></param>
         private void HeartBeat(object obj)
         {
-                    IEeventType lastevent = IEeventType.ready;
+            IEeventType lastevent = IEeventType.ready;
             while (true)
             {
                 // Если пришёл сигнал о прекращении работы - выходим
@@ -121,38 +120,31 @@ namespace YnetFS.InteractionEnvironment
 
                 lock (RemoteClients) //pign each remote clients and remove disconnected
                 {
-                    var disconnected = new List<old_RemoteClient>();
                     foreach (var r in RemoteClients)
-                    {
-                        var hbres = CheckRemoteClientState(r);
-                        if (!hbres)
-                            disconnected.Add(r);
-                    }
-                    foreach (var r in disconnected)
-                    { RemoteClients.Remove(r); throw new Exception("не убирать из списка"); }
+                        r.IsOnline = CheckRemoteClientState(r);
 
                     //================
-                    if (RemoteClients.Count(x => x.last_online_state == true) == 0)
-                    {
-                        if (lastevent != IEeventType.forever_alone_mode)
-                        {
-                            lastevent = IEeventType.forever_alone_mode;
-                            if (OnIeStateChanged != null) OnIeStateChanged(this, IEeventType.forever_alone_mode);
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        if (lastevent == IEeventType.forever_alone_mode)
-                        {
-                            lastevent = IEeventType.ready;
-                            if (OnIeStateChanged != null) OnIeStateChanged(this, IEeventType.ready);
-                            continue;
-                        }
-                    }
+                    //if (RemoteClients.Count(x => x.last_online_state == true) == 0)
+                    //{
+                    //    if (lastevent != IEeventType.forever_alone_mode)
+                    //    {
+                    //        lastevent = IEeventType.forever_alone_mode;
+                    //        if (OnIeStateChanged != null) OnIeStateChanged(this, IEeventType.forever_alone_mode);
+                    //        continue;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (lastevent == IEeventType.forever_alone_mode)
+                    //    {
+                    //        lastevent = IEeventType.ready;
+                    //        if (OnIeStateChanged != null) OnIeStateChanged(this, IEeventType.ready);
+                    //        continue;
+                    //    }
+                    //}
 
-                    ParentClient.Settings.LastAliveTime = DateTime.Now;
-                    ParentClient.Settings.Save();
+                    //ParentClient.Settings.LastAliveTime = DateTime.Now;
+                    //ParentClient.Settings.Save();
 
                     //EmitRemoteClientStateChanged(r, RemoteClientState.Connected, RemoteClientState.Disconnected);
                 }
@@ -170,15 +162,15 @@ namespace YnetFS.InteractionEnvironment
         /// <summary>
         /// Send message to remote client
         /// </summary>
-        /// <param name="old_RemoteClient"></param>
+        /// <param name="RemoteClient"></param>
         /// <param name="message"></param>
-        public abstract void Send(old_RemoteClient RemoteClient, Message message);
+        public abstract void Send(RemoteClient RemoteClient, Message message);
 
         #region Events
-       
+
         //=============================================================================
         public event dMessageRecived MessageRecived;
-        public void EmitMessageRecived(old_RemoteClient fromClient, Message Message)
+        public void EmitMessageRecived(RemoteClient fromClient, Message Message)
         {
             if (MessageRecived != null)
                 MessageRecived(fromClient, Message);
@@ -204,22 +196,22 @@ namespace YnetFS.InteractionEnvironment
                 {
                     //try
                     //{
-                        while (Tasks.Count > 0)
+                    while (Tasks.Count > 0)
+                    {
+                        var t = new Task();
+                        if (Tasks.TryDequeue(out t))
                         {
-                            var t = new Task();
-                            if (Tasks.TryDequeue(out t))
-                            {
-                                t.Method();
-                            }
-                            else
-                            {
-                                //ParentClient.Log(NLog.LogLevel.Error, "deque fail");
-                                Thread.Sleep(100);
-                            }
+                            t.Method();
                         }
-                   // }
+                        else
+                        {
+                            //ParentClient.Log(NLog.LogLevel.Error, "deque fail");
+                            Thread.Sleep(100);
+                        }
+                    }
+                    // }
                     //catch (Exception ex)
-                  //  {
+                    //  {
                     //    ParentClient.Log(LogLevel.Fatal, ex.Message, null);
                     //}
                 }
@@ -228,19 +220,20 @@ namespace YnetFS.InteractionEnvironment
             m_signal.Close();
         }
 
- 
 
-        public void OnMessageRecived(old_RemoteClient fromClient, Message Message) {
+
+        public void OnMessageRecived(RemoteClient fromClient, Message Message)
+        {
             Tasks.Enqueue(new Task(() =>
             {
-                Message.OnRecived(fromClient, ParentClient);
-            },""));
+                // Message.OnRecived(fromClient, ParentClient);
+            }, ""));
             m_signal.Set();
         }
 
 
 
-        public abstract bool CheckRemoteClientState(old_RemoteClient rc);
+        public abstract bool CheckRemoteClientState(RemoteClient rc);
 
         public virtual void Shutdown()
         {
@@ -251,7 +244,7 @@ namespace YnetFS.InteractionEnvironment
             lock (RemoteClients)
             {
                 RemoteClients.Clear();
-                RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged; 
+                RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged;
             }
             RemoteClients = null;
             MessageRecived -= OnMessageRecived;
@@ -270,26 +263,10 @@ namespace YnetFS.InteractionEnvironment
         public delegate void dIeEventHandler(BaseInteractionEnvironment b, IEeventType et);
         public event dIeEventHandler OnIeStateChanged;
 
-        internal void AddRemoteClient (old_RemoteClient client)
-        {
-            lock (RemoteClients)
-            {
-                if (!RemoteClients.Contains(client))
-                RemoteClients.Add(client);
-            }
-        }
-        internal void RemoveRemoteClient(old_RemoteClient client)
-        {
-            lock (RemoteClients)
-            {
-                if (RemoteClients.Contains(client))
-                    RemoteClients.Remove(client);
-            }
-        }
 
         public bool HasRemoteClient(string id)
         {
-            lock (RemoteClients) return RemoteClients.Any(x=>x.Id==id);
+            lock (RemoteClients) return RemoteClients.Any(x => x.Id == id);
         }
 
         internal void SendToAll(Message message)
@@ -309,6 +286,24 @@ namespace YnetFS.InteractionEnvironment
 
 
         public bool Alive { get; set; }
+
+        internal void AddRemoteClient(RemoteClient client)
+        {
+            lock (RemoteClients)
+            {
+                if (!RemoteClients.Contains(client))
+                    RemoteClients.Add(client);
+            }
+        }
+        internal void RemoveRemoteClient(RemoteClient client)
+        {
+            lock (RemoteClients)
+            {
+                if (RemoteClients.Contains(client))
+                    RemoteClients.Remove(client);
+            }
+        }
+
     }
 
 

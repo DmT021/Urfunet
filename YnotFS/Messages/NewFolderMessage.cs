@@ -29,7 +29,7 @@ namespace YnetFS.Messages
             this.Name = srcFolder.Name;
         }
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             ////check folder exists
 

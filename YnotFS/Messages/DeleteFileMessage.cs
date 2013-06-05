@@ -25,7 +25,7 @@ namespace YnetFS.Messages
             base.BeforeSend();
         }
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: delete {0}",RelativePath);
             base.OnRecived(from, to);

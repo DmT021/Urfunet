@@ -31,16 +31,16 @@ namespace YnetFS
                 RulePool[r.TriggerEvent].Add(r);
             }
         }
-        protected old_Client c { get; set; }
+        protected Client c { get; set; }
         protected BaseInteractionEnvironment env { get { return c.Environment; } }
         protected abstract FSObjectEvents TriggerEvent { get; }
-        public virtual void Eval(old_Client c, IFSObject obj) { this.c = c; }
+        public virtual void Eval(Client c, IFSObject obj) { this.c = c; }
 
     }
     public class rDownloadOnRemoteCreate : yNotRule
     {
 
-        public override void Eval(old_Client c, IFSObject obj)
+        public override void Eval(Client c, IFSObject obj)
         {
             base.Eval(c, obj);
             var srcFile = obj as BaseFile;
@@ -49,7 +49,7 @@ namespace YnetFS
                 var owner = c.GetFileOwner(srcFile);
                 c.Log(LogLevel.Info, "get replica for {0}", srcFile.Name);
                 if (owner != null && owner.IsRemote)
-                    (owner as old_RemoteClient).Send(new DownloadFileMessage(srcFile, null));
+                    (owner as RemoteClient).Send(new DownloadFileMessage(srcFile, null));
             }
         }
 
@@ -69,7 +69,7 @@ namespace YnetFS
             get { return FSObjectEvents.local_delete; }
         }
 
-        public override void Eval(old_Client c, IFSObject obj)
+        public override void Eval(Client c, IFSObject obj)
         {
             base.Eval(c, obj);
             var srcFile = obj as BaseFile;
@@ -84,7 +84,7 @@ namespace YnetFS
             get { return FSObjectEvents.local_created; }
         }
 
-        public override void Eval(old_Client c, IFSObject obj)
+        public override void Eval(Client c, IFSObject obj)
         {
             base.Eval(c, obj);
             var srcFile = obj as BaseFile;

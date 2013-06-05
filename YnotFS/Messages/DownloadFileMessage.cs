@@ -46,7 +46,7 @@ namespace YnetFS.Messages
             count++;
         }
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             Environment.ParentClient.Log(LogLevel.Info, "REMOTE: request to download {0}", RelativePath);
             Environment.ParentClient.Log(LogLevel.Info, "sending {0}", RelativePath);
@@ -74,7 +74,7 @@ namespace YnetFS.Messages
         public SendFileMessage(BaseFile baseFile) : base(baseFile) { }
 
 
-        public override void OnRecived(old_RemoteClient from, old_Client to)
+        public override void OnRecived(RemoteClient from, Client to)
         {
             base.OnRecived(from, to);
             if (srcFile == null) throw new Exception("remote client has not such file");

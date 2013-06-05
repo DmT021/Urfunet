@@ -121,7 +121,7 @@ namespace Dashboard
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 cpanel.IsEnabled = NewState == ClientStates.online;
-                label1.Content = NewState.ToString() + "(" + c.Settings.LastOne.ToString() + ")";
+                label1.Content = NewState.ToString();// +"(" + c.Settings.LastOne.ToString() + ")";
 
             }), null);
         }
