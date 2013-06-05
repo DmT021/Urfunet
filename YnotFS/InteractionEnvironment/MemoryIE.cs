@@ -27,23 +27,32 @@ namespace YnetFS.InteractionEnvironment
                 Clients.CollectionChanged += Clients_CollectionChanged;
             }
         }
+
         void Clients_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-
             if (e.NewItems != null)
+            {
                 foreach (Client c in e.NewItems)
+                {
                     if (c.Id != ParentClient.Id)
+                    {
                         RemoteClients.Add(new RemoteClient(c.Id, this)
                         {
-                            LastOne =
-                                c.Settings.LastOne
+                            LastOne = c.Settings.LastOne
                         });
+                    }
+                }
+            }
         }
+
         public override void BootStrap()
         {
             ///look for connected clients and add them to the remotes
             foreach (var c in Clients)
-                RemoteClients.Add(new RemoteClient(c.Id, this));
+                RemoteClients.Add(new RemoteClient(c.Id, this)
+                {
+                    LastOne = c.Settings.LastOne
+                });
         }
 
         public override void Send(RemoteClient RemoteClient, Messages.Message message)

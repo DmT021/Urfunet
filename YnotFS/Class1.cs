@@ -131,6 +131,14 @@ namespace YnetFS
         }
 
         public int OnlineCount { get { lock (this)return Items.Count(x => x.IsOnline); } }
+
+        internal IEnumerable<RemoteClient> Online()
+        {
+            lock (this)
+            {
+                return this.Where(x => x.IsOnline).ToList();
+            }
+        }
     }
 
     

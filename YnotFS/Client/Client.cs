@@ -112,6 +112,7 @@ namespace YnetFS
                             FileSystem = null;
                             Environment.Shutdown();
                             _Environment = null;
+                            
                             Log(LogLevel.Info, "Выключение...", null);
                             break;
                         }
@@ -178,27 +179,32 @@ namespace YnetFS
                 UpdateState();
             }
 
-            ///если группа набрана - переходим в online и снимаем пометку lastone
-            else if (State == ClientStates.idle && RemoteClients.OnlineCount >= MinClients)
-            {
-                Log(LogLevel.Info, "Минимальная группа набрана", null);
-                State = ClientStates.online;
-                Settings.LastOne = false;
+            ///////////////////если группа набрана - переходим в online и снимаем пометку lastone
+            ////////////////else if (State == ClientStates.idle && RemoteClients.OnlineCount >= MinClients)
+            ////////////////{
+            ////////////////    Log(LogLevel.Info, "Минимальная группа набрана", null);
+            ////////////////    State = ClientStates.online;
+            ////////////////    Settings.LastOne = false;
 
+            ////////////////}
+
+            ///////////////////если группа рассыпается - переходим в ожидание и помечаем себя как lastone
+            ////////////////else if (State == ClientStates.online && RemoteClients.OnlineCount < MinClients)
+            ////////////////{
+            ////////////////    State = ClientStates.idle;
+            ////////////////}
+            ////////////////if (((State == ClientStates.online) || (State == ClientStates.idle)) && RemoteClients.OnlineCount == 0)
+            ////////////////{
+            ////////////////    Settings.LastOne = true;
+            ////////////////}
+
+            Settings.RemainingClients.Clear();
+            foreach (RemoteClient item in RemoteClients.Online())
+            {
+                Settings.RemainingClients.Add(item.Id);
             }
 
-            ///если группа рассыпается - переходим в ожидание и помечаем себя как lastone
-            else if (State == ClientStates.online && RemoteClients.OnlineCount < MinClients)
-            {
-                State = ClientStates.idle;
-            }
-            if (((State == ClientStates.online) || (State == ClientStates.idle)) && RemoteClients.OnlineCount < MinClients)
-            {
-                Settings.LastOne = true;
-            }
-
-
-
+            // TODO: проверить, если множество компьютеров в сети образуют целостное хранилище (т.е. содержащее все файлы) - перейти в онлайн
         }
 
         void Environment_OnReady(object sender, EventArgs e)
@@ -271,17 +277,29 @@ namespace YnetFS
 
     public class ClientSettings
     {
-        public ClientSettings() { }
-        public ClientSettings(Client c)
+        public ClientSettings()
+        {
+            RemainingClients = new ObservableCollection<string>();
+            RemainingClients.CollectionChanged += RemainingClients_CollectionChanged;
+        }
+
+        public ClientSettings(Client c) : 
+            this()
         {
             this.c = c;
             var filename = Path.Combine(c.MyDir.FullName, "settings.dat");
             if (File.Exists(filename))
             {
                 var tmp = (ClientSettings)JsonConvert.DeserializeObject(File.ReadAllText(filename), typeof(ClientSettings));
-                LastOne = tmp.LastOne;
+                if (RemainingClients != null)
+                    RemainingClients.CollectionChanged -= RemainingClients_CollectionChanged;
+                RemainingClients = tmp.RemainingClients;
+                RemainingClients.CollectionChanged += RemainingClients_CollectionChanged;
             }
-            else FirstStart = true;
+            else
+            {
+                FirstStart = true;
+            }
 
             Save();
         }
@@ -294,23 +312,36 @@ namespace YnetFS
             //     File.Delete(filename);
             File.WriteAllText(filename, JSonPresentationFormatter.Format(JsonConvert.SerializeObject(this)));
         }
-        bool _LastOne = false;
+
+        //bool _LastOne = false;
+        [JsonIgnore]
         public bool LastOne
         {
-            get { return _LastOne; }
-            set
+            //get { return _LastOne; }
+            //set
+            //{
+            //    if (_LastOne == value) return;
+            //    _LastOne = value;
+            //    Save();
+            //}
+            get
             {
-                if (_LastOne == value) return;
-                _LastOne = value;
-                Save();
+                return RemainingClients.Count == 0;
             }
         }
+
         public bool FirstStart = false;
         public string Id { get; set; }
         public DateTime LastAliveTime { get; set; }
+        public ObservableCollection<string> RemainingClients { get; private set; }
 
         [JsonIgnore]
         public Client c { get; set; }
+
+        void RemainingClients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Save();
+        }
     }
 
     [Target("CustomLogTarget")]
@@ -329,6 +360,6 @@ namespace YnetFS
 
     }
 
- 
+
 
 }

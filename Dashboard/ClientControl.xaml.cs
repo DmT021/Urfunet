@@ -250,7 +250,7 @@ namespace Dashboard
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (c.State == ClientStates.idle || c.State == ClientStates.online)
+            if (c.State != ClientStates.offline)
                 c.ShutDown();
             else
             {
