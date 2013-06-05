@@ -69,6 +69,7 @@
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\NetworkMessage.cs" />
     <Compile Include="Messages\NewFileMessage.cs" />
+    <Compile Include="Messages\RequestSynch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
