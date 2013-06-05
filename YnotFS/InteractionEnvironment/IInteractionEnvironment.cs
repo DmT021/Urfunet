@@ -304,6 +304,15 @@ namespace YnetFS.InteractionEnvironment
             }
         }
 
+        public bool HasReadyNodes(List<RemoteClient> currents)
+        {
+            var idlist = currents.Select(x => x.Id);
+            var files = ParentClient.FileSystem.GetFileList();
+            foreach (var f in files)
+                if (!f.meta.Replics.Any(x => idlist.Contains(x)))
+                    return false;
+            return true;
+        }
 
         public void Dispose()
         {
