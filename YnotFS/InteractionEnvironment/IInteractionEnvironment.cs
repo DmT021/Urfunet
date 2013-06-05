@@ -15,7 +15,7 @@ namespace YnetFS.InteractionEnvironment
     public delegate void dMessageRecived(RemoteClient fromClient, Message Message);
 
 
-    public abstract class BaseInteractionEnvironment
+    public abstract class BaseInteractionEnvironment:IDisposable
     {
         const int HeartBeatInterval = 5 * 1000;
 
@@ -304,6 +304,11 @@ namespace YnetFS.InteractionEnvironment
             }
         }
 
+
+        public void Dispose()
+        {
+            Shutdown();
+        }
     }
 
 

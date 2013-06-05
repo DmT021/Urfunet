@@ -68,6 +68,8 @@ namespace Dashboard
 
             v_curdir = c.FileSystem.RootDir;
 
+            
+
         }
         string _real_curdir = "";
         string real_curdir { get { return _real_curdir; } set {
@@ -293,93 +295,6 @@ namespace Dashboard
     }
 
 
-    //public class q : IFSObject
-    //{
-    //    public string Name { get; set; }
-    //    public q(IFSObject obj)
-    //    {
-    //        Items = new ObservableCollection<q>();
-    //        this.obj = obj;
-    //        if (obj is BaseFile)
-    //            this.Name = (obj as BaseFile).Name;
 
-    //        Load();
-
-
-    //    }
-    //    public override string ToString()
-    //    {
-    //        return obj.ToString();
-    //    }
-    //    void Files_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    //    {
-    //        ClientControl.myDispatcher.BeginInvoke(new Action(() =>
-    //        {
-    //                Items.Clear();
-    //                Load();
-    //        }), null);
-    //    }
-
-    //    private void Load()
-    //    {
-    //        if (obj is BaseFolder)
-    //        {
-    //            var d = obj as BaseFolder;
-    //            Name = d.Name;
-
-    //                lock (d.FS)
-    //            {
-    //                foreach (var f in d.Files)
-    //                    Items.Add(new q(f));
-
-    //                foreach (var f in d.Folders)
-    //                    Items.Add(new q(f));
-    //            }
-    //            d.Folders.CollectionChanged += Folders_CollectionChanged;
-    //            d.Files.CollectionChanged += Files_CollectionChanged;
-    //        }
-    //    }
-
-    //    void Folders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    //    {
-    //        ClientControl.myDispatcher.BeginInvoke(new Action(() =>
-    //        {
-    //            Items.Clear();
-    //            Load();
-    //        }), null);
-    //    }
-    //    public string MetaPath
-    //    {
-    //        get { return obj.MetaPath; }
-    //    }
-
-    //    public string RealPath
-    //    {
-    //        get { return obj.RealPath; }
-    //    }
-
-    //    public IFSObject obj { get; set; }
-    //    public ObservableCollection<q> Items { get; set; }
-    //    public string Meta
-    //    {
-    //        get
-    //        {
-    //            string str = "";
-    //            if (obj is BaseFile)
-    //            {
-    //                str = JsonConvert.SerializeObject((obj as BaseFile).meta);
-    //            }
-    //            if (obj is BaseFolder)
-    //                str = obj.Name;
-    //            return JSonPresentationFormatter.Format(str.Substring(1, str.Length - 2));
-    //        }
-    //    }
-
-
-    //    public string RelativePath
-    //    {
-    //        get { throw new NotImplementedException(); }
-    //    }
-    //}
 
 }
