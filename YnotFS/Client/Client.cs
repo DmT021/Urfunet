@@ -107,6 +107,7 @@ namespace YnetFS
 
         private void Start()
         {
+            State = ClientStates.Synchronization;
             OpeningSettings = new ClientSettings(this);
             Settings = OpeningSettings; // .Clone();
 
@@ -128,7 +129,7 @@ namespace YnetFS
                 Log(LogLevel.Info, "Мы сами LastOne", null);
                 Environment.SendToAll(new SyncMessage());
 
-                if (Environment.HasEnoughNodes(GetAllClients()))
+                if (CheckReadyForOnline())
                 {
                     State = ClientStates.Online;
                 }
@@ -142,6 +143,11 @@ namespace YnetFS
                 State = ClientStates.Synchronization;
             }
             SaveSettings();
+        }
+
+        private bool CheckReadyForOnline()
+        {
+            return RemoteClients.OnlineCount >= 2 && Environment.HasEnoughNodes(GetAllClients());
         }
 
         private bool CheckLastOneSynchronized()
@@ -233,7 +239,7 @@ namespace YnetFS
                 }
                 if (State == ClientStates.Idle || State == ClientStates.Online)
                 {
-                    if (Environment.HasEnoughNodes(GetAllClients()))
+                    if (CheckReadyForOnline())
                     {
                         State = ClientStates.Online;
                     }
@@ -393,7 +399,7 @@ namespace YnetFS
 
         internal void SyncComplited()
         {
-            if (Environment.HasEnoughNodes(GetAllClients()))
+            if (CheckReadyForOnline())
             {
                 State = ClientStates.Online;
             }
