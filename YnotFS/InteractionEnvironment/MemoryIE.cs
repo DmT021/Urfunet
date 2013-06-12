@@ -69,6 +69,7 @@ namespace YnetFS.InteractionEnvironment
                 lock (Clients)
                 {
                     message.Environment = this;
+                    if (!Clients.Any(x => x.Id == RemoteClient.Id)) { ParentClient.Log(LogLevel.Error, "Не могу послать сообщение {0} узлу {1}. Похоже что он оффлайн", message, RemoteClient); return; }
                     var B = Clients.FirstOrDefault(x => x.Id == RemoteClient.Id).Environment;
                     if (B == null) throw new Exception("client not ready or offline");
                     var m = Message.Decode(message.Code(), B);
