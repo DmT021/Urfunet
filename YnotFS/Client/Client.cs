@@ -154,13 +154,15 @@ namespace YnetFS
 
         private void Stop()
         {
+            SaveSettings();
+
             Environment.OnIeStateChanged -= _Environment_OnIeStateChanged;
             Environment.OnReady -= Environment_OnReady;
             RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged;
             FileSystem = null;
             Environment.Shutdown();
             Environment = null;
-
+            
             State = ClientStates.Offline;
         }
 
@@ -266,11 +268,14 @@ namespace YnetFS
 
         private void SaveSettings()
         {
-            Settings.WasInSynchronizedGroup = Synchronized;
-            Settings.RemainingClients.Clear();
-            foreach (RemoteClient item in RemoteClients.GetOnline())
+            if (State != ClientStates.Offline)
             {
-                Settings.RemainingClients.Add(item.Id);
+                Settings.WasInSynchronizedGroup = Synchronized;
+                Settings.RemainingClients.Clear();
+                foreach (RemoteClient item in RemoteClients.GetOnline())
+                {
+                    Settings.RemainingClients.Add(item.Id);
+                }
             }
         }
 
