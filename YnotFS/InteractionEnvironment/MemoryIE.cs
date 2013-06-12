@@ -44,6 +44,7 @@ namespace YnetFS.InteractionEnvironment
                     {
                         RemoteClients.Add(new RemoteClient(c.Id, this)
                         {
+                            IsOnline = c.State != ClientStates.Offline
                         });
                     }
                 }
@@ -54,9 +55,15 @@ namespace YnetFS.InteractionEnvironment
         {
             ///look for connected clients and add them to the remotes
             foreach (var c in Clients)
-                RemoteClients.Add(new RemoteClient(c.Id, this)
+            {
+                if (c.Id != ParentClient.Id)
                 {
-                });
+                    RemoteClients.Add(new RemoteClient(c.Id, this)
+                    {
+                        IsOnline = c.State != ClientStates.Offline
+                    });
+                }
+            }
         }
 
         public override void Send(RemoteClient RemoteClient, Messages.Message message)

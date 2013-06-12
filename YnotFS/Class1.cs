@@ -28,7 +28,7 @@ namespace YnetFS
             Items = new ObservableCollection<RemoteClient>();
             Items.CollectionChanged += items_CollectionChanged;
 
-            Load();
+            //Load();
         }
 
         void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

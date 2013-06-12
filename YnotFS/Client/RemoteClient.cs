@@ -29,7 +29,7 @@ namespace YnetFS
         {
             this.Id = FromId;
             this.Env = env;
-            IsOnline = true;
+            IsOnline = false;
         }
         public bool IsRemote
         {
