@@ -53,17 +53,33 @@ namespace YnetFS
         {
             get { return Id.GetHashCode(); }
         }
-        bool _LastOne = false;
-        public bool LastOne
+
+        //bool _LastOne = false;
+        //public bool LastOne
+        //{
+        //    get
+        //    {
+        //        return _LastOne;
+        //    }
+        //    set
+        //    {
+        //        _LastOne = value;
+        //        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("LastOne"));
+        //    }
+        //}
+
+        bool syncronized = false;
+        public bool Synchronized
         {
             get
             {
-                return _LastOne;
+                return syncronized;
             }
             set
             {
-                _LastOne = value;
-                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("LastOne"));
+                syncronized = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("Syncronized"));
             }
         }
 
@@ -79,13 +95,13 @@ namespace YnetFS
 
             message.FromId = Env.ParentClient.Id;
             Env.Send(this, message);
-
         }
 
         public override string ToString()
         {
-            return Id + " [" + (IsOnline ? "+" : "-") + "]" + (LastOne ? "lo" : "");
+            return Id + " [" + (IsOnline ? "+" : "-") + "]" + (Synchronized ? "syncd" : "");
         }
+
         public override bool Equals(object obj)
         {
             if (!(obj is RemoteClient)) return false;

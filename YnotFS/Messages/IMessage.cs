@@ -81,9 +81,9 @@ namespace YnetFS.Messages
  
     }
 
-    public class SynchMessage : Message
+    public class SyncMessage : Message
     {
-        public SynchMessage()
+        public SyncMessage()
         {
         }
 
@@ -101,6 +101,7 @@ namespace YnetFS.Messages
             base.OnRecived(from, to);
             var myroot = Environment.ParentClient.FileSystem.RootDir;
             MergeFolder(RootDir, myroot);
+            to.SyncComplited();
         }
         
         void MergeFolder(BaseFolder remote, BaseFolder local)

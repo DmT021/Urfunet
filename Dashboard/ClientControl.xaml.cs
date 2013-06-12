@@ -44,7 +44,7 @@ namespace Dashboard
             c = client as Client;
             c.StateChanged += c_StateChanged;
 
-            cpanel.IsEnabled = c.State==ClientStates.online;
+            cpanel.IsEnabled = c.State==ClientStates.Online;
 
             Logs = new ObservableCollection<string>();
 
@@ -62,7 +62,7 @@ namespace Dashboard
                     v_curdir = v_curdir;
                 }), null);
             };
-            label1.Content = c.State.ToString() + "(" + c.Settings.LastOne.ToString() + ")";
+            label1.Content = c.State.ToString() + "(" + (c.Synchronized ? "Synchronized" : "Not synchronized") + ")";
 
             real_curdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -122,7 +122,7 @@ namespace Dashboard
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                cpanel.IsEnabled = NewState == ClientStates.online;
+                cpanel.IsEnabled = NewState == ClientStates.Online;
                 label1.Content = NewState.ToString();// +"(" + c.Settings.LastOne.ToString() + ")";
 
             }), null);
@@ -252,7 +252,7 @@ namespace Dashboard
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (c.State != ClientStates.offline)
+            if (c.State != ClientStates.Offline)
                 c.ShutDown();
             else
             {

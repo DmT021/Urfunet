@@ -29,6 +29,11 @@ namespace YnetFS.InteractionEnvironment
             Addresses = new Dictionary<RemoteClient, IPAddress>();
         }
 
+        public override void Start()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void BootStrap()
         {
             //start tcp
@@ -185,6 +190,11 @@ namespace YnetFS.InteractionEnvironment
         public override bool CheckRemoteClientState(RemoteClient rc)
         {
             return false;
+        }
+
+        public override bool CheckClientLastOne(List<string> clientRemainingClients)
+        {
+            throw new NotImplementedException();
         }
     }
 

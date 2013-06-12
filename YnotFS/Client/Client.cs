@@ -18,8 +18,17 @@ using YnetFS.Messages;
 
 namespace YnetFS
 {
-    public enum ClientStates { offline, wait_lastone, idle, online }
-    public class Client : INode,IDisposable
+    public enum ClientStates
+    {
+        Offline,
+        Starting,
+        WaitSynchronizedClient,
+        Synchronization,
+        Idle,
+        Online
+    }
+
+    public class Client : INode, IDisposable
     {
         const int MinClients = 5;
         /// <summary>
@@ -55,12 +64,11 @@ namespace YnetFS
             Id = id;
             Logs = new ObservableCollection<string>();
 
-            Settings = new ClientSettings(this);
-
             Up();
         }
 
         public ClientSettings Settings { get; set; }
+        public ClientSettings OpeningSettings { get; set; }
 
 
         #region logging
@@ -75,137 +83,228 @@ namespace YnetFS
         }
         #endregion
 
-        BaseInteractionEnvironment _Environment = null;
         public BaseInteractionEnvironment Environment
         {
-            get
-            {
-                return _Environment;
-            }
+            get;
+            private set;
         }
 
-        public void ShutDown() { if (State != ClientStates.offline) State = ClientStates.offline; UpdateState(); }
+        public void ShutDown()
+        {
+            if (State != ClientStates.Offline) Stop();
+        }
+
         public void Up()
         {
             Log(LogLevel.Info, "Включение...", null);
 
-            if (State == ClientStates.offline) State = ClientStates.wait_lastone; UpdateState();
+            if (State == ClientStates.Offline)
+            {
+                //State = ClientStates.Starting;
+                Start();
+            }
         }
 
+        private void Start()
+        {
+            OpeningSettings = new ClientSettings(this);
+            Settings = OpeningSettings; // .Clone();
 
-        ClientStates _State = ClientStates.offline;
+            if (FileSystem == null) 
+                FileSystem = new YnetFS.FileSystem.Mock.MockFS(this, MyDir.FullName);
+
+            if (Environment == null) 
+                Environment = new MemoryIE(this);
+            Environment.OnIeStateChanged += _Environment_OnIeStateChanged; ;
+            Environment.OnReady += Environment_OnReady;
+            RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
+
+            Environment.Start();
+
+            var losync = CheckLastOneSynchronized();
+
+            if (losync)
+            {
+                Log(LogLevel.Info, "Мы сами LastOne", null);
+                Environment.SendToAll(new SyncMessage());
+
+                if (Environment.HasEnoughNodes(GetAllClients()))
+                {
+                    State = ClientStates.Online;
+                }
+                else
+                {
+                    State = ClientStates.Idle;
+                }
+            }
+            else
+            {
+                State = ClientStates.Synchronization;
+            }
+            SaveSettings();
+        }
+
+        private bool CheckLastOneSynchronized()
+        {
+            if (!OpeningSettings.WasInSynchronizedGroup)
+                return false;
+
+            return Environment.CheckClientLastOne(OpeningSettings.RemainingClients.ToList());
+        }
+
+        private void Stop()
+        {
+            Environment.OnIeStateChanged -= _Environment_OnIeStateChanged;
+            Environment.OnReady -= Environment_OnReady;
+            RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged;
+            FileSystem = null;
+            Environment.Shutdown();
+            Environment = null;
+
+            State = ClientStates.Offline;
+        }
+
+        ClientStates state = ClientStates.Offline;
         public ClientStates State
         {
-            get { return _State; }
+            get { return state; }
             private set
             {
-                var oldstaste = _State;
-                _State = value;
-                if (_State == oldstaste) return;
+                var oldstaste = state;
+                state = value;
+                if (state == oldstaste) return;
+
+                if (StateChanged != null)
+                    StateChanged(this, State);
+
                 switch (State)
                 {
-                    case ClientStates.offline:
+                    case ClientStates.Offline:
                         {
-                            _Environment.OnIeStateChanged -= _Environment_OnIeStateChanged;
-                            Environment.OnReady -= Environment_OnReady;
-                            RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged;
-                            FileSystem = null;
-                            Environment.Shutdown();
-                            _Environment = null;
-                            
                             Log(LogLevel.Info, "Выключение...", null);
                             break;
                         }
-                    case ClientStates.wait_lastone:
+                    case ClientStates.Starting:
                         {
-                            if (FileSystem == null) FileSystem = new YnetFS.FileSystem.Mock.MockFS(this, MyDir.FullName);
-
-                            if (_Environment == null) _Environment = new MemoryIE(this);
-                            Environment.OnIeStateChanged += _Environment_OnIeStateChanged; ;
-                            Environment.OnReady += Environment_OnReady;
-                            Environment.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
-                            Log(LogLevel.Info, "Ожидание последнего...", null);
+                            Log(LogLevel.Info, "Включение...", null);
                             break;
                         }
-                    case ClientStates.idle:
+                    case ClientStates.WaitSynchronizedClient:
+                        {
+                            Log(LogLevel.Info, "Ожидание синхронизованного...", null);
+                            break;
+                        }
+                    case ClientStates.Synchronization:
+                        {
+                            Log(LogLevel.Info, "Синхронизация", null);
+                            break;
+                        }
+                    case ClientStates.Idle:
                         {
                             Log(LogLevel.Info, "Монтирование файловой системы в режим ro...", null);
                             break;
                         }
-                    case ClientStates.online:
-                        if (oldstaste == ClientStates.offline)
-                        { State = ClientStates.wait_lastone; break; }
-                        wasonline = true;
-                        Log(LogLevel.Info, "Монтирование файловой системы в режим rw...", null);
-                        Log(LogLevel.Info, "Переход в online...", null);
+                    case ClientStates.Online:
+                        {
+                            Log(LogLevel.Info, "Монтирование файловой системы в режим rw...", null);
+                            Log(LogLevel.Info, "Переход в online...", null);
 
-                        break;
+                            break;
+                        }
                     default:
                         break;
                 }
-                if (StateChanged != null) StateChanged(this, State);
             }
         }
 
         void RemoteClients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-
-
-            if (e.NewItems != null)
+            if (e.NewItems != null) // если узлы добавлены
+            {
                 foreach (RemoteClient it in e.NewItems)
                 {
-                    Log(LogLevel.Info, "Узел \"{0}\" подключен...", it.Id);
+                    Log(LogLevel.Info, "Узел \"{0}\": {1}", it.Id, it.IsOnline ? "Connected" : "Disconnected");
+                    if (it.IsOnline && 
+                        Synchronized && 
+                        Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id).ToList()))
+                        it.Send(new SyncMessage());
                 }
-            UpdateState();
+                if (State == ClientStates.Idle || State == ClientStates.Online)
+                {
+                    if (Environment.HasEnoughNodes(GetAllClients()))
+                    {
+                        State = ClientStates.Online;
+                    }
+                    else
+                    {
+                        State = ClientStates.Idle;
+                    }
+                }
+                SaveSettings();
+            }
+            //if (e.OldItems != null) // если узлы удалены
+            //{
+            //    if (State == ClientStates.Online)
+            //    {
+            //        if (Environment.HasEnoughNodes(GetAllClients()))
+            //        {
+            //            State = ClientStates.Online;
+            //        }
+            //        else
+            //        {
+            //            State = ClientStates.Idle;
+            //        }
+            //    }
+            //}
         }
 
-        bool wasonline = false;
-        private void UpdateState()
+        //private void UpdateState()
+        //{
+        //    SaveSettings();
+        //    CheckHasEnoughNodes();
+        //}
+
+        private void SaveSettings()
         {
-            ///lastone не должен сам ждать другого lastone
-            ///Сразу надо перйти в odle
-            if (State == ClientStates.wait_lastone && Settings.LastOne)
-            {
-                State = ClientStates.idle;
-                UpdateState();
-            }
-
-            ///если дождались lastone переходим в idle
-            else if (State == ClientStates.wait_lastone && RemoteClients.Count(x => x.IsOnline && x.LastOne) >= 1)
-            {
-                State = ClientStates.idle;
-                var lo = RemoteClients.First(x => x.IsOnline && x.LastOne);
-                lo.Send(new RequestSynch());
-                UpdateState();
-            }
-
-            ///////////////////если группа набрана - переходим в online и снимаем пометку lastone
-            ////////////////else if (State == ClientStates.idle && RemoteClients.OnlineCount >= MinClients)
-            ////////////////{
-            ////////////////    Log(LogLevel.Info, "Минимальная группа набрана", null);
-            ////////////////    State = ClientStates.online;
-            ////////////////    Settings.LastOne = false;
-
-            ////////////////}
-
-            ///////////////////если группа рассыпается - переходим в ожидание и помечаем себя как lastone
-            ////////////////else if (State == ClientStates.online && RemoteClients.OnlineCount < MinClients)
-            ////////////////{
-            ////////////////    State = ClientStates.idle;
-            ////////////////}
-            ////////////////if (((State == ClientStates.online) || (State == ClientStates.idle)) && RemoteClients.OnlineCount == 0)
-            ////////////////{
-            ////////////////    Settings.LastOne = true;
-            ////////////////}
-
+            Settings.WasInSynchronizedGroup = Synchronized;
             Settings.RemainingClients.Clear();
-            foreach (RemoteClient item in RemoteClients.Online())
+            foreach (RemoteClient item in RemoteClients.GetOnline())
             {
                 Settings.RemainingClients.Add(item.Id);
             }
-
-            // TODO: проверить, если множество компьютеров в сети образуют целостное хранилище (т.е. содержащее все файлы) - перейти в онлайн
         }
+
+        //private void CheckHasEnoughNodes()
+        //{
+        //    var allClients = GetAllClients();
+        //    if (State == ClientStates.Idle)
+        //    {
+        //        if (Environment.HasEnoughNodes(allClients))
+        //        {
+        //            // TODO: проверить, если множество компьютеров в сети образуют целостное хранилище (т.е. содержащее все файлы) - перейти в онлайн
+        //            State = ClientStates.Online;
+        //            Log(LogLevel.Info, "Есть достаточно нод, переходим в онлайн", null);
+        //        }
+        //        else
+        //        {
+        //            Log(LogLevel.Info, "Нужно больше нод", null);
+        //        }
+        //    }
+        //}
+
+        private List<INode> GetAllClients()
+        {
+            var allClients = RemoteClients.GetOnline().Select(x => x as INode).ToList();
+            allClients.Add(this);
+            return allClients;
+        }
+
+        //// workaround only for memoryie
+        //public bool LastOneSynchronized
+        //{
+        //    get;
+        //    private set;
+        //}
 
         void Environment_OnReady(object sender, EventArgs e)
         {
@@ -244,6 +343,7 @@ namespace YnetFS
             }
             return res;
         }
+
         public INode GetNodeById(string id)
         {
             lock (RemoteClients)
@@ -277,76 +377,29 @@ namespace YnetFS
         {
             Environment.Dispose();
         }
-    }
 
-    public class ClientSettings
-    {
-        public ClientSettings()
+        public bool Synchronized
         {
-            RemainingClients = new ObservableCollection<string>();
-            RemainingClients.CollectionChanged += RemainingClients_CollectionChanged;
+            get
+            {
+                return State == ClientStates.Idle || State == ClientStates.Online;
+            }
         }
 
-        public ClientSettings(Client c) : 
-            this()
+        internal void SyncComplited()
         {
-            this.c = c;
-            var filename = Path.Combine(c.MyDir.FullName, "settings.dat");
-            if (File.Exists(filename))
+            if (Environment.HasEnoughNodes(GetAllClients()))
             {
-                var tmp = (ClientSettings)JsonConvert.DeserializeObject(File.ReadAllText(filename), typeof(ClientSettings));
-                if (RemainingClients != null)
-                    RemainingClients.CollectionChanged -= RemainingClients_CollectionChanged;
-                RemainingClients = tmp.RemainingClients;
-                RemainingClients.CollectionChanged += RemainingClients_CollectionChanged;
+                State = ClientStates.Online;
             }
             else
             {
-                FirstStart = true;
+                State = ClientStates.Idle;
             }
-
-            Save();
-        }
-        public void Save()
-        {
-
-            if (c == null) return;
-            var filename = Path.Combine(c.MyDir.FullName, "settings.dat");
-            // if (File.Exists(filename))
-            //     File.Delete(filename);
-            File.WriteAllText(filename, JSonPresentationFormatter.Format(JsonConvert.SerializeObject(this)));
-        }
-
-        //bool _LastOne = false;
-        [JsonIgnore]
-        public bool LastOne
-        {
-            //get { return _LastOne; }
-            //set
-            //{
-            //    if (_LastOne == value) return;
-            //    _LastOne = value;
-            //    Save();
-            //}
-            get
-            {
-                return RemainingClients.Count == 0;
-            }
-        }
-
-        public bool FirstStart = false;
-        public string Id { get; set; }
-        public DateTime LastAliveTime { get; set; }
-        public ObservableCollection<string> RemainingClients { get; private set; }
-
-        [JsonIgnore]
-        public Client c { get; set; }
-
-        void RemainingClients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Save();
+            SaveSettings();
         }
     }
+
 
     [Target("CustomLogTarget")]
     public class CustomLogTarget : TargetWithLayout
@@ -363,7 +416,4 @@ namespace YnetFS
         }
 
     }
-
-
-
 }

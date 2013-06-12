@@ -190,7 +190,7 @@ namespace YnetFS.InteractionEnvironment
                 if (m_stop)
                     break;
 
-                if (!ie_ready) continue;
+                //if (!ie_ready) continue;
 
                 lock (this)
                 {
@@ -226,7 +226,7 @@ namespace YnetFS.InteractionEnvironment
         {
             Tasks.Enqueue(new Task(() =>
             {
-                // Message.OnRecived(fromClient, ParentClient);
+                Message.OnRecived(fromClient, ParentClient);
             }, ""));
             m_signal.Set();
         }
@@ -275,7 +275,7 @@ namespace YnetFS.InteractionEnvironment
             {
                 lock (RemoteClients)
                 {
-                    foreach (var it in RemoteClients)
+                    foreach (var it in RemoteClients.GetOnline())
                         it.Send(message);
                 }
             }, ""));
@@ -304,7 +304,7 @@ namespace YnetFS.InteractionEnvironment
             }
         }
 
-        public bool HasReadyNodes(List<RemoteClient> currents)
+        public bool HasEnoughNodes(List<INode> currents)
         {
             var idlist = currents.Select(x => x.Id);
             var files = ParentClient.FileSystem.GetFileList();
@@ -318,6 +318,10 @@ namespace YnetFS.InteractionEnvironment
         {
             Shutdown();
         }
+
+        public abstract bool CheckClientLastOne(List<string> clientRemainingClients);
+
+        public abstract void Start();
     }
 
 

@@ -87,12 +87,13 @@ namespace YnetFS
 
 
             if (CollectionChanged != null)
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,sender));
+                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, sender));
         }
 
         public void Clear()
         {
-            lock (this) Items.Clear();
+            lock (this)
+                Items.Clear();
         }
 
         public bool Contains(RemoteClient item)
@@ -132,7 +133,7 @@ namespace YnetFS
 
         public int OnlineCount { get { lock (this)return Items.Count(x => x.IsOnline); } }
 
-        internal IEnumerable<RemoteClient> Online()
+        internal List<RemoteClient> GetOnline()
         {
             lock (this)
             {
@@ -141,5 +142,5 @@ namespace YnetFS
         }
     }
 
-    
+
 }

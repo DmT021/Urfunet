@@ -12,7 +12,6 @@ using YnetFS.Messages;
 
 namespace YnetFS.InteractionEnvironment
 {
-
     public class MemoryIE : BaseInteractionEnvironment
     {
 
@@ -23,8 +22,15 @@ namespace YnetFS.InteractionEnvironment
         {
             lock (Clients)
             {
-                Clients.Add(ParentClient);
                 Clients.CollectionChanged += Clients_CollectionChanged;
+            }
+        }
+
+        public override void Start()
+        {
+            lock (Clients)
+            {
+                Clients.Add(ParentClient);
             }
         }
 
@@ -38,7 +44,6 @@ namespace YnetFS.InteractionEnvironment
                     {
                         RemoteClients.Add(new RemoteClient(c.Id, this)
                         {
-                            LastOne = c.Settings.LastOne
                         });
                     }
                 }
@@ -51,7 +56,6 @@ namespace YnetFS.InteractionEnvironment
             foreach (var c in Clients)
                 RemoteClients.Add(new RemoteClient(c.Id, this)
                 {
-                    LastOne = c.Settings.LastOne
                 });
         }
 
@@ -89,14 +93,26 @@ namespace YnetFS.InteractionEnvironment
                     }
             }
             if (c == null) return false;
-            var res = (c.State != ClientStates.offline);
+            var res = (c.State != ClientStates.Offline);
             return res;
         }
 
         public override void Shutdown()
         {
             base.Shutdown();
+            Clients.CollectionChanged -= Clients_CollectionChanged;
             Clients.Remove(ParentClient);
+        }
+
+        public override bool CheckClientLastOne(List<string> clientRemainingClients)
+        {
+            var online = RemoteClients.GetOnline();
+            foreach (var item in clientRemainingClients)
+            {
+                if (!online.Any(x => x.Id == item))
+                    return false;
+            }
+            return true;
         }
     }
 

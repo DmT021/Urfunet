@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Client\Client.cs" />
+    <Compile Include="Client\ClientSettings.cs" />
     <Compile Include="Client\Rules.cs" />
     <Compile Include="jSonPresentationFormatter.cs" />
     <Compile Include="Messages\DeleteFileMessage.cs" />
