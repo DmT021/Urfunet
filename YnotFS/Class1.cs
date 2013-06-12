@@ -71,7 +71,8 @@ namespace YnetFS
             var filename = Path.Combine(Env.ParentClient.MyDir.FullName, "contacts.dat");
             if (!File.Exists(filename)) return;
             Items = (ObservableCollection<RemoteClient>)JsonConvert.DeserializeObject(File.ReadAllText(filename, Encoding.UTF8), typeof(ObservableCollection<RemoteClient>));
-
+            foreach (var it in Items)
+                it.Env = Env;
         }
         void Save()
         {
