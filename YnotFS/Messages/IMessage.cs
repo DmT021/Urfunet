@@ -97,7 +97,7 @@ namespace YnetFS.Messages
 
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Synch with {0}",from.Id);
+            Environment.ParentClient.Log(LogLevel.Info, "{0}: Синхронизироваться", from.Id);
             base.OnRecived(from, to);
             var myroot = Environment.ParentClient.FileSystem.RootDir;
             MergeFolder(RootDir, myroot);

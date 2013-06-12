@@ -30,7 +30,7 @@ namespace YnetFS.Messages
         {
             //check folder exists
 
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: create new file {0}", RelativePath);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: создать файл {0}", RelativePath,from);
             var fs = Environment.ParentClient.FileSystem as MockFS;
             var fsobj = fs.Find(RelativePath) as BaseFolder;
 
@@ -56,7 +56,7 @@ namespace YnetFS.Messages
         }
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: updated meta for {0} from {1}", RelativePath,from.Id);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: обновить метаинформацию о файле {0}", RelativePath, from.Id);
             base.OnRecived(from, to);
             if (srcFile!=null) 
             srcFile.UpdateMeta(Meta,true);
@@ -100,7 +100,7 @@ namespace YnetFS.Messages
         public LockFileMessage(BaseFile srcFile) : base(srcFile) { }
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Lock {0}", RelativePath);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: Блокировать файл {0}", RelativePath,from);
             base.OnRecived(from, to);
             srcFile.Lock();
         }
@@ -110,7 +110,7 @@ namespace YnetFS.Messages
         public UnLockFileMessage(BaseFile srcFile) : base(srcFile) { }
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: Unlock {0}", RelativePath);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: Разблокировать файл {0}", RelativePath,from);
             base.OnRecived(from, to);
             srcFile.UnLock();
         }

@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="InteractionEnvironment\RemoteClientsManager.cs" />
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientSettings.cs" />
     <Compile Include="Client\Rules.cs" />

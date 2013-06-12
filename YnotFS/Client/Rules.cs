@@ -47,7 +47,7 @@ namespace YnetFS
             if (c.GetFileReplics(srcFile).Contains(c))/// srcFile.InReplics(c.Id))
             {
                 var owner = c.GetFileOwner(srcFile);
-                c.Log(LogLevel.Info, "get replica for {0}", srcFile.Name);
+                c.Log(LogLevel.Info, "Получение реплики для {0}", srcFile.Name);
                 if (owner != null && owner.IsRemote)
                     (owner as RemoteClient).Send(new DownloadFileMessage(srcFile, null));
             }
@@ -73,7 +73,7 @@ namespace YnetFS
         {
             base.Eval(c, obj);
             var srcFile = obj as BaseFile;
-            c.Log(LogLevel.Info, "send delte file {0} to all", srcFile.Name);
+            c.Log(LogLevel.Info, "Отсылаю команду \"удалить файл {0}\"", srcFile.Name);
             c.Environment.SendToAll(new DeleteFSObjMessage(srcFile));
         }
     }
@@ -88,7 +88,7 @@ namespace YnetFS
         {
             base.Eval(c, obj);
             var srcFile = obj as BaseFile;
-            c.Log(LogLevel.Info, "become owner for {0}", srcFile.Name);
+            c.Log(LogLevel.Info, "становлюсь координатором {0}", srcFile.Name);
             srcFile.SetOwner(c.Id.ToString());
 
             lock (c.RemoteClients)
@@ -97,7 +97,7 @@ namespace YnetFS
                     srcFile.AddReplica(r.Id.ToString());
 
             }
-            c.Log(LogLevel.Info, "Sending meta to all", srcFile.Name);
+            c.Log(LogLevel.Info, "Рассылаю обновленную метаинформацию", srcFile.Name);
             env.SendToAll(new NewFileMessage(srcFile));
         }
     }

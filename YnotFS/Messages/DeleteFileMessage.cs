@@ -27,7 +27,7 @@ namespace YnetFS.Messages
 
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: delete {0}",RelativePath);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: удалить файл {0}",RelativePath,from);
             base.OnRecived(from, to);
             var fs = Environment.ParentClient.FileSystem as MockFS;
             var fsobj = fs.Find(RelativePath);

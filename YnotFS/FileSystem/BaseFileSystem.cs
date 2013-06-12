@@ -221,7 +221,7 @@ namespace YnetFS.FileSystem
                 var metapath = Path.Combine(ParentFolder.MetaPath, MetaFile.Name);
 
                 if (File.Exists(metapath))
-                    throw new Exception(string.Format("File \"{0}\" already exists!", metapath));// return null; 
+                    throw new Exception(string.Format("Файл \"{0}\" уже существует!", metapath));// return null; 
 
 
                 var f = new BaseFile(ParentFolder, MetaFile);

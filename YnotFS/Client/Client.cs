@@ -111,8 +111,12 @@ namespace YnetFS
             OpeningSettings = new ClientSettings(this);
             Settings = OpeningSettings; // .Clone();
 
-            if (FileSystem == null) 
+            if (FileSystem == null)
+            {
                 FileSystem = new YnetFS.FileSystem.Mock.MockFS(this, MyDir.FullName);
+                FileSystem.OnFolderEvent += FileSystem_OnFolderEvent;
+                FileSystem.OnFileEvent += FileSystem_OnFileEvent;
+            }
 
             if (Environment == null) 
                 Environment = new MemoryIE(this);
@@ -165,6 +169,10 @@ namespace YnetFS
             Environment.OnIeStateChanged -= _Environment_OnIeStateChanged;
             Environment.OnReady -= Environment_OnReady;
             RemoteClients.CollectionChanged -= RemoteClients_CollectionChanged;
+
+            FileSystem.OnFolderEvent -= FileSystem_OnFolderEvent;
+            FileSystem.OnFileEvent -= FileSystem_OnFileEvent;
+
             FileSystem = null;
             Environment.Shutdown();
             Environment = null;
@@ -189,7 +197,7 @@ namespace YnetFS
                 {
                     case ClientStates.Offline:
                         {
-                            Log(LogLevel.Info, "Выключение...", null);
+                            Log(LogLevel.Info, "Выключено...", null);
                             break;
                         }
                     //case ClientStates.Starting:
@@ -210,11 +218,13 @@ namespace YnetFS
                     case ClientStates.Idle:
                         {
                             Log(LogLevel.Info, "Монтирование файловой системы в режим ro...", null);
+                            FileSystem.ReadOnly = true;
                             break;
                         }
                     case ClientStates.Online:
                         {
                             Log(LogLevel.Info, "Монтирование файловой системы в режим rw...", null);
+                            FileSystem.ReadOnly = false;
                             Log(LogLevel.Info, "Переход в online...", null);
 
                             break;
@@ -232,8 +242,8 @@ namespace YnetFS
                 foreach (RemoteClient it in e.NewItems)
                 {
                     Log(LogLevel.Info, "Узел \"{0}\": {1}", it.Id, it.IsOnline ? "Connected" : "Disconnected");
-                    if (it.IsOnline && 
-                        Synchronized && 
+                    if (it.IsOnline &&
+                        Synchronized &&
                         Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
                         it.Send(new SyncMessage());
                 }
@@ -248,8 +258,110 @@ namespace YnetFS
                         State = ClientStates.Idle;
                     }
                 }
-                SaveSettings();
             }
+
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add && State==ClientStates.Online)
+            {
+
+                ///Вновь подключившемуся должен ответить ближайший узел 
+                foreach (RemoteClient it in e.NewItems)
+                {
+                    lock (RemoteClients)
+                    {
+                        if (Environment.IsNearest(this, it, RemoteClients.ToList()))
+                        {
+                            Log(LogLevel.Info, "Отправляю {0} синхронизацию", it);
+                            it.Send(new SyncMessage());
+                        }
+                    }
+                }
+
+            }
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach (RemoteClient r in e.OldItems)
+                {
+
+
+                    var rid = r.Id.ToString();
+                    var allfiles = FileSystem.GetFileList();
+                    ///когда узел ушел мы должны найти файлы, для которых он был мастером и для которых мы являемся репликой.
+                    ///если мы являемся ближайшей по расстоянию репликой, то делаем себя мастером и рассылаем метаинфу
+                    ///
+
+
+
+                    List<BaseFile> files = allfiles.Where(x => x.meta.Owner == rid).Where(x => x.meta.Replics.Contains(this.Id.ToString())).ToList(); //FileSystem.GetFilesByOwnerID(r.Id.ToString()).Where(x => x.meta.Replics.Contains(Id.ToString())).ToList();
+
+                    foreach (var f in files)
+                    {
+                        var reps = new List<RemoteClient>();
+                        foreach (var it in f.meta.Replics)//реплики файла надо профильровать. необходимо вычислить ближайшую из доступных реплик
+                            if (RemoteClients.Any(x => x.Id.ToString() == it))
+                            {
+                                var tmprepl = RemoteClients.First(x => x.Id.ToString() == it);
+                                if (!tmprepl.IsOnline) continue;
+                                reps.Add(tmprepl);
+                            }
+                        if (Environment.IsNearest(this, r, reps))
+                        {
+                            Log(LogLevel.Info, "set me as owner of {0}", f.Name);
+                            f.SetOwner(Id.ToString());
+                            Log(LogLevel.Info, "remove {1} from replicas of {0}", f.Name, rid);
+                            f.RemoveReplica(rid);
+                            if (f.meta.Replics.Count < 3)
+                            {
+                                Log(LogLevel.Info, "not enouch replicas for {0}", f.Name);
+                                var newrepl = RemoteClients.FirstOrDefault(x => x.IsOnline && !f.meta.Replics.Contains(x.Id.ToString()));
+                                if (newrepl != null)
+                                {
+                                    Log(LogLevel.Info, "set {1} as replica for {0}", f.Name, newrepl.Id.ToString());
+                                    f.AddReplica(newrepl.Id.ToString());
+                                }
+                            }
+
+                            Environment.SendToAll(new UpdateMetaInfoMessage(f));
+                        }
+                    }
+                    ///если пропала релика а я мастер, а реплик осталось маловато - создать новую репликкку
+                    ///
+
+                    files = allfiles.Where(x => GetFileOwner(x) == this).ToList();// FileSystem.GetFilesByOwnerID(Id.ToString());
+
+                    foreach (var f in files)
+                    {
+                        if (!GetFileReplics(f).Any(x => x.Id == rid)) continue;// !f.InReplics(rid)) continue;
+                        f.RemoveReplica(rid);
+
+                        var ralive = new List<RemoteClient>();
+                        foreach (var it in f.meta.Replics)//реплики файла надо профильровать. необходимо вычислить ближайшую из доступных реплик
+                            if (RemoteClients.Any(x => x.Id.ToString() == it))
+                            {
+                                var tmprepl = RemoteClients.First(x => x.Id.ToString() == it);
+                                if (!tmprepl.IsOnline) continue;
+                                ralive.Add(tmprepl);
+                            }
+
+                        if (ralive.Count < 2)
+                        {
+                            Log(LogLevel.Info, "not enouch replicas for {0}", f.Name);
+                            var newrepl = RemoteClients.FirstOrDefault(x => x.IsOnline && !ralive.Contains(x));
+                            if (newrepl != null)
+                            {
+                                Log(LogLevel.Info, "set {1} as replica for {0}", f.Name, newrepl.Id.ToString());
+                                f.AddReplica(newrepl.Id.ToString());
+                            }
+                        }
+                        Environment.SendToAll(new UpdateMetaInfoMessage(f));
+                    }
+
+
+                }
+            }
+
+            SaveSettings();
+
             //if (e.OldItems != null) // если узлы удалены
             //{
             //    if (State == ClientStates.Online)
@@ -408,6 +520,123 @@ namespace YnetFS
                 State = ClientStates.Idle;
             }
             SaveSettings();
+        }
+
+        public INode GetRandomReplica(BaseFile file)
+        {
+            lock (RemoteClients)
+            {
+                var reps = GetFileReplics(file);
+                var rnd = new Random(DateTime.Now.Millisecond);
+                while (true)
+                {
+                    if (reps.Count == 0) return null;
+                    int ind = rnd.Next(reps.Count - 1);
+                    var res = reps[ind];
+                    if (res.IsOnline) return res;
+
+                    reps.RemoveAt(ind);
+                    ///if no one alive - vary bad =\
+                }
+            }
+        }
+        void FileSystem_OnFileEvent(BaseFile srcFile, FSObjectEvents eventtype)
+        {
+            lock (RemoteClients)
+            {
+                if (yNotRule.RulePool.ContainsKey(eventtype))
+                    foreach (var r in yNotRule.RulePool[eventtype])
+                        r.Eval(this, srcFile);
+            }
+
+            ///блокировки файлов и т д
+
+            if (eventtype == FSObjectEvents.local_changed)
+            {
+                Log(LogLevel.Info, "Отправка обновленной метаинформации");
+                Environment.SendToAll(new UpdateMetaInfoMessage(srcFile));
+            }
+
+            if (eventtype == FSObjectEvents.local_opend)
+            {
+
+                Environment.SendToAll(new LockFileMessage(srcFile));
+                if (!srcFile.data.Downloaded)
+                {
+                    ///файл не загружен - выбираем слуйчайную реплику
+                    ///загружаем файл
+                    ///добавляем себя в реплики
+                    ///сообщаем об изменении метаинформации
+
+                    var r = GetRandomReplica(srcFile);
+                    if (r == null) throw new Exception("Не найдены релики");
+                    var m = new EventWaitHandle(false, EventResetMode.AutoReset);
+                    (r as RemoteClient).Send(new DownloadFileMessage(srcFile, m));
+                    m.WaitOne(-1);
+                    srcFile.AddReplica(Id);
+                    Log(NLog.LogLevel.Info, "Получена реплика файла {0}", this);
+                    FileSystem_OnFileEvent(srcFile, FSObjectEvents.local_changed);
+                }
+
+
+            }
+
+            if (eventtype == FSObjectEvents.local_changed || eventtype == FSObjectEvents.remote_changed)
+            {
+
+                ///если хэши не совпадают (и реплика загружена), обновить реплику
+                ///OR
+                ///если я в репликах - я дожен загузить этот файл
+                ///
+                // if ()
+                if ((srcFile.data.Downloaded && srcFile.data.ComputeHash() != srcFile.meta.Hash) || (GetFileReplics(srcFile).Contains(this) && !srcFile.data.Downloaded))
+                {
+                    Log(LogLevel.Info, "Файл изменен. Инициирую обновление {0}", srcFile);
+                    var m = new EventWaitHandle(false, EventResetMode.AutoReset);
+                    Log(LogLevel.Info, "Загружаю реплику {0}", srcFile.Name);
+                    (GetFileOwner(srcFile) as RemoteClient).Send(new DownloadFileMessage(srcFile, m));
+                    //m.WaitOne(-1);
+                }
+
+                Log(LogLevel.Info, "Обновлена метаинформация для файла {0}", srcFile.Name);
+            }
+            if (eventtype == FSObjectEvents.local_closed)
+            {
+                ///сравнить хэш
+                ///если совпадает - файл не изменен. просто разлокируем его
+                ///если нет - ставим себя влядельцем файла и рассылаем всем новую метаинфу. 
+                ///те должны сравнить хэш и загрузить файл.
+                ///после этого файл можно разблокировать
+                ///
+
+                var oldhash = srcFile.meta.Hash;
+                var newhash = srcFile.data.ComputeHash();
+                if (oldhash != newhash)
+                {
+                    srcFile.SetHash(newhash);
+                    srcFile.SetOwner(Id);
+
+                    FileSystem_OnFileEvent(srcFile, FSObjectEvents.local_changed);
+                    // ParentFolder.FS.ParentClient.Environment.SendToAll(new UpdateMetaInfoMessage(this));
+                }
+                Environment.SendToAll(new UnLockFileMessage(srcFile));
+
+            }
+
+        }
+
+        void FileSystem_OnFolderEvent(BaseFolder srcFolder, FSObjectEvents eventtype)
+        {
+            if (eventtype == FSObjectEvents.local_created)
+            {
+                Log(LogLevel.Info, "Шлем команду \"создать папку {0}\"", srcFolder.Name);
+                Environment.SendToAll(new NewFolderMessage(srcFolder));
+            }
+            if (eventtype == FSObjectEvents.local_delete)
+            {
+                Log(LogLevel.Info, "Шлем команду \"удалить папку {0}\"", srcFolder.Name);
+                Environment.SendToAll(new DeleteFSObjMessage(srcFolder));
+            }
         }
     }
 

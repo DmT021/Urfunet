@@ -36,10 +36,6 @@ namespace YnetFS
             if (CollectionChanged != null) CollectionChanged(sender, e);
         }
 
-
-
-
-
         public RemoteClient this[string index]
         {
             get { lock (this)return Items.FirstOrDefault(x => x.Id == index); }
@@ -88,7 +84,16 @@ namespace YnetFS
 
 
             if (CollectionChanged != null)
+            {
+                if (e!=null&&e.PropertyName == "IsOnline")
+                {
+                    CollectionChanged(this, new NotifyCollectionChangedEventArgs((sender as RemoteClient).IsOnline ? NotifyCollectionChangedAction.Add : NotifyCollectionChangedAction.Remove, sender));
+                    return;
+                }
+
                 CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, sender));
+
+            }
         }
 
         public void Clear()
@@ -104,7 +109,11 @@ namespace YnetFS
 
         public void CopyTo(RemoteClient[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            lock (Items)
+                for (int i = arrayIndex; i < Items.Count; i++)
+                {
+                    array[i] = Items[i];
+                }
         }
 
         public int Count

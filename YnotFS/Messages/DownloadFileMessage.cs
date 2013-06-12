@@ -48,19 +48,18 @@ namespace YnetFS.Messages
 
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: request to download {0}", RelativePath);
-            Environment.ParentClient.Log(LogLevel.Info, "sending {0}", RelativePath);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: загрузить файл {0}", RelativePath,from);
+            Environment.ParentClient.Log(LogLevel.Info, "Отправка файла {0} на узел {1}", RelativePath, from);
             base.OnRecived(from, to);
  
             var newfilename = Path.Combine(ExchageFolder.FullName, srcFile.Name);
-            if (!File.Exists(newfilename))
-            {
+            if (File.Exists(newfilename))
+                File.Delete(newfilename);
 
                 if (File.Exists(srcFile.RealPath))
                     File.Copy(srcFile.RealPath, newfilename);
-                else
-                    from.Send(new SendFileMessage());
-            }
+               // else
+           //         from.Send(new SendFileMessage());
             from.Send(new SendFileMessage(srcFile));
         }
     }
@@ -77,8 +76,8 @@ namespace YnetFS.Messages
         public override void OnRecived(RemoteClient from, Client to)
         {
             base.OnRecived(from, to);
-            if (srcFile == null) throw new Exception("remote client has not such file");
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: file recived {0}", RelativePath);
+            if (srcFile == null) throw new Exception("Удаленный клиент сообщает что такого файла нет ({0})");
+            Environment.ParentClient.Log(LogLevel.Info, "Загружен файл {0} с узла {1}", RelativePath, from);
             var tmpfile = Path.Combine(DownloadFileMessage.ExchageFolder.FullName, srcFile.Name);
             srcFile.PushData(tmpfile);
 

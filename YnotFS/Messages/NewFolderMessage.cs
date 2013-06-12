@@ -33,7 +33,7 @@ namespace YnetFS.Messages
         {
             ////check folder exists
 
-            Environment.ParentClient.Log(LogLevel.Info, "REMOTE: create folder {0}", Name);
+            Environment.ParentClient.Log(LogLevel.Info, "{1}: Создать папку {0}", Name,from);
 
             base.OnRecived(from, to);
             var fs = Environment.ParentClient.FileSystem;
