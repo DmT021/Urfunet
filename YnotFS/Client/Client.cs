@@ -21,8 +21,8 @@ namespace YnetFS
     public enum ClientStates
     {
         Offline,
-        Starting,
-        WaitSynchronizedClient,
+        //Starting,
+        //WaitSynchronizedClient,
         Synchronization,
         Idle,
         Online
@@ -184,16 +184,16 @@ namespace YnetFS
                             Log(LogLevel.Info, "Выключение...", null);
                             break;
                         }
-                    case ClientStates.Starting:
-                        {
-                            Log(LogLevel.Info, "Включение...", null);
-                            break;
-                        }
-                    case ClientStates.WaitSynchronizedClient:
-                        {
-                            Log(LogLevel.Info, "Ожидание синхронизованного...", null);
-                            break;
-                        }
+                    //case ClientStates.Starting:
+                    //    {
+                    //        Log(LogLevel.Info, "Включение...", null);
+                    //        break;
+                    //    }
+                    //case ClientStates.WaitSynchronizedClient:
+                    //    {
+                    //        Log(LogLevel.Info, "Ожидание синхронизованного...", null);
+                    //        break;
+                    //    }
                     case ClientStates.Synchronization:
                         {
                             Log(LogLevel.Info, "Синхронизация", null);
@@ -226,7 +226,7 @@ namespace YnetFS
                     Log(LogLevel.Info, "Узел \"{0}\": {1}", it.Id, it.IsOnline ? "Connected" : "Disconnected");
                     if (it.IsOnline && 
                         Synchronized && 
-                        Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id).ToList()))
+                        Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
                         it.Send(new SyncMessage());
                 }
                 if (State == ClientStates.Idle || State == ClientStates.Online)
