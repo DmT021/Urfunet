@@ -29,9 +29,9 @@ namespace YnetFS.Messages
             foreach (var it in output)
                 if (it.Name == o)
                 {
-                     var res = (Message)JsonConvert.DeserializeObject(s, it);
-                     res.Environment = Env;
-                     return res;
+                    var res = (Message)JsonConvert.DeserializeObject(s, it);
+                    res.Environment = Env;
+                    return res;
                 }
             throw new Exception("MessageType not found");
         }
@@ -50,7 +50,7 @@ namespace YnetFS.Messages
                     derivedType.IsAssignableFrom(t)
                     ).ToList();
 
-        } 
+        }
         #endregion
         #region Properties
 
@@ -63,7 +63,7 @@ namespace YnetFS.Messages
         [JsonProperty(PropertyName = "_fromId")]
         public string _fromId { get; set; }
         [JsonIgnore]
-        public string FromId { get { return _fromId; } set { _fromId = value; } } 
+        public string FromId { get { return _fromId; } set { _fromId = value; } }
         #endregion
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace YnetFS.Messages
         {
             return GetType().Name;
         }
- 
+
     }
 
     public class SyncMessage : Message
@@ -97,13 +97,13 @@ namespace YnetFS.Messages
 
         public override void OnRecived(RemoteClient from, Client to)
         {
-            Environment.ParentClient.Log(LogLevel.Info, "{0}: Синхронизироваться", from.Id);
+            Environment.ParentClient.Log(LogLevel.Info, "Синхронизироваться {0} -> {1}", from.Id, to.Id);
             base.OnRecived(from, to);
             var myroot = Environment.ParentClient.FileSystem.RootDir;
             MergeFolder(RootDir, myroot);
             to.SyncComplited();
         }
-        
+
         void MergeFolder(BaseFolder remote, BaseFolder local)
         {
             ///процесс сливания (local) папки с (remote) папкой
@@ -115,10 +115,11 @@ namespace YnetFS.Messages
 
             foreach (var it in remote.Files)
             {
-                if (!local.Files.Any(x => x.meta.Id == it.meta.Id))
+                //if (!local.Files.Any(x => x.meta.Id == it.meta.Id))
+                if (!local.Files.Any(x => x.RelativePath == it.RelativePath))
                 {
                     //craete metafile
-                    Environment.ParentClient.FileSystem.AddFile(local, it.meta,FSObjectEvents.remote_create);
+                    Environment.ParentClient.FileSystem.AddFile(local, it.meta, FSObjectEvents.remote_create);
                 }
             }
             var tmpfiles = new List<BaseFile>();
@@ -126,7 +127,8 @@ namespace YnetFS.Messages
 
             foreach (var f in tmpfiles)
             {
-                if (!remote.Files.Any(x => x.meta.Id == f.meta.Id))
+                //if (!remote.Files.Any(x => x.meta.Id == f.meta.Id))
+                if (!remote.Files.Any(x => x.RelativePath == f.RelativePath))
                     Environment.ParentClient.FileSystem.Delete(f, FSObjectEvents.remote_delete);
             }
 
@@ -134,7 +136,7 @@ namespace YnetFS.Messages
             {
                 if (!local.Folders.Any(x => x.Name == it.Name))
                 {
-                    Environment.ParentClient.FileSystem.CreateFolder(local, it.Name,FSObjectEvents.remote_create);
+                    Environment.ParentClient.FileSystem.CreateFolder(local, it.Name, FSObjectEvents.remote_create);
                 }
             }
             var tmpfolders = new List<BaseFolder>();
@@ -142,7 +144,7 @@ namespace YnetFS.Messages
             foreach (var f in tmpfolders)
             {
                 var rf = remote.Folders.FirstOrDefault(x => x.Name == f.Name);
-                if (rf!=null)
+                if (rf != null)
                     MergeFolder(rf, f);
                 else
                     Environment.ParentClient.FileSystem.Delete(f, FSObjectEvents.remote_delete);

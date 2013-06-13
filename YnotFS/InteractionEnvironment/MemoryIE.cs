@@ -44,7 +44,8 @@ namespace YnetFS.InteractionEnvironment
                     {
                         RemoteClients.Add(new RemoteClient(c.Id, this)
                         {
-                            IsOnline = c.State != ClientStates.Offline
+                            IsOnline = c.State != ClientStates.Offline,
+                            Synchronized = c.Synchronized
                         });
                     }
                 }
@@ -60,7 +61,8 @@ namespace YnetFS.InteractionEnvironment
                 {
                     RemoteClients.Add(new RemoteClient(c.Id, this)
                     {
-                        IsOnline = c.State != ClientStates.Offline
+                        IsOnline = c.State != ClientStates.Offline,
+                        Synchronized = c.Synchronized
                     });
                 }
             }

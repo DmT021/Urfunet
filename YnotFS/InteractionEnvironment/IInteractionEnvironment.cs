@@ -82,7 +82,7 @@ namespace YnetFS.InteractionEnvironment
             lock (sourcelist)
             {
                 foreach (var r in sourcelist.Where(x => x.IsOnline))
-                    if (r != from_id)
+                    if (r != from_id && r!=to_id)
                         list_to_Find.Add(r);
             }
             if (list_to_Find.Count == 0) return true;

@@ -30,6 +30,11 @@ namespace YnetFS
 
     public class Client : INode, IDisposable
     {
+        public override string ToString()
+        {
+            return "<> " + Id + " [" + (State != ClientStates.Offline ? "+" : "-") + "]" + (Synchronized ? "syncd" : "");
+        }
+
         const int MinClients = 5;
         /// <summary>
         /// ready if remote clients >= 5
@@ -126,7 +131,9 @@ namespace YnetFS
 
             Environment.Start();
 
-            var losync = CheckLastOneSynchronized();
+            bool groupSynced = CheckGroupSynchronized();
+
+            var losync = !groupSynced && CheckLastOneSynchronized();
 
             if (losync)
             {
@@ -147,6 +154,20 @@ namespace YnetFS
                 State = ClientStates.Synchronization;
             }
             SaveSettings();
+        }
+
+        private bool CheckGroupSynchronized()
+        {
+            if (RemoteClients.OnlineCount > 0)
+            {
+                var online = RemoteClients.GetOnline();
+                var anyclient = online[0];
+                if (anyclient.Synchronized)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool CheckReadyForOnline()
@@ -243,7 +264,7 @@ namespace YnetFS
                 {
                     if (it.IsOnline &&
                         Synchronized &&
-                        Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
+                        Environment.IsNearest(this, it, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
                         it.Send(new SyncMessage());
                 }
             }
