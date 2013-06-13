@@ -158,8 +158,5 @@ namespace YnetFS.Messages
                 }
             }
         }
-
     }
-
-  
 }

@@ -62,9 +62,17 @@ namespace Dashboard
                     v_curdir = v_curdir;
                 }), null);
             };
+
+            c.FileSystem.OnFolderEvent += (s, de) =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    v_curdir = v_curdir;
+                }), null);
+            };
             label1.Content = c.State.ToString() + "(" + (c.Synchronized ? "Synchronized" : "Not synchronized") + ")";
 
-            real_curdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            real_curdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\test";
 
             v_curdir = c.FileSystem.RootDir;
 
