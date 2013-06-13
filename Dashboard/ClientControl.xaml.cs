@@ -44,7 +44,7 @@ namespace Dashboard
             c = client as Client;
             c.StateChanged += c_StateChanged;
 
-            cpanel.IsEnabled = c.State==ClientStates.Online;
+            cpanel.IsEnabled = c.State == ClientStates.Online;
 
             Logs = new ObservableCollection<string>();
 
@@ -68,15 +68,20 @@ namespace Dashboard
 
             v_curdir = c.FileSystem.RootDir;
 
-            
+
 
         }
         string _real_curdir = "";
-        string real_curdir { get { return _real_curdir; } set {
-            _real_curdir = value;
-            realfiles.ItemsSource = new List<string>{".."}.Union(Directory.GetFiles(real_curdir).Select(x => new FileInfo(x).Name)).Union(Directory.GetDirectories(real_curdir).Select(x => new DirectoryInfo(x).Name));
-            N("");
-        } }
+        string real_curdir
+        {
+            get { return _real_curdir; }
+            set
+            {
+                _real_curdir = value;
+                realfiles.ItemsSource = new List<string> { ".." }.Union(Directory.GetFiles(real_curdir).Select(x => new FileInfo(x).Name)).Union(Directory.GetDirectories(real_curdir).Select(x => new DirectoryInfo(x).Name));
+                N("");
+            }
+        }
 
         BaseFolder _v_curdir = null;
         BaseFolder v_curdir
@@ -96,14 +101,14 @@ namespace Dashboard
             }
         }
 
-        
+
         private void realfiles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (realfiles.SelectedItem != null)
             {
-                var newpath = System.IO.Path.Combine(real_curdir,realfiles.SelectedItem.ToString());
+                var newpath = System.IO.Path.Combine(real_curdir, realfiles.SelectedItem.ToString());
                 if (Directory.Exists(newpath))
-                    real_curdir=newpath;
+                    real_curdir = newpath;
 
 
             }
@@ -118,7 +123,7 @@ namespace Dashboard
                 DragDrop.DoDragDrop(realfiles, realfiles.SelectedItem, DragDropEffects.Copy);
         }
 
-        void c_StateChanged(object sender,ClientStates NewState)
+        void c_StateChanged(object sender, ClientStates NewState)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -131,13 +136,14 @@ namespace Dashboard
 
         void Logs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() => {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
                 if (e.NewItems != null)
                     foreach (var c in e.NewItems)
                     {
-                        Logs.Insert(0,c as string);
+                        Logs.Insert(0, c as string);
                     }
-                if (e.OldItems!= null)
+                if (e.OldItems != null)
                     foreach (var c in e.OldItems)
                     {
                         Logs.Remove(c as string);
@@ -169,10 +175,12 @@ namespace Dashboard
 
 
 
-   
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            c.FileSystem.CreateFolder(v_curdir, "New",FSObjectEvents.local_created);
+            var foldname = Prompt.ShowDialog("Select folder name", "New folder");
+            if (foldname != null)
+                c.FileSystem.CreateFolder(v_curdir, foldname, FSObjectEvents.local_created);
         }
 
 
@@ -194,7 +202,7 @@ namespace Dashboard
             //update meta info on window
 
             string str = "";
-            var obj = v_curdir.Items.FirstOrDefault(x=>x.Name==selected);
+            var obj = v_curdir.Items.FirstOrDefault(x => x.Name == selected);
             if (obj == null) return;
             if (obj is BaseFile)
             {
@@ -283,11 +291,11 @@ namespace Dashboard
         void copydir(string from, BaseFolder to)
         {
 
-            var newf = to.FS.CreateFolder(to,new DirectoryInfo(from).Name,FSObjectEvents.local_created);
+            var newf = to.FS.CreateFolder(to, new DirectoryInfo(from).Name, FSObjectEvents.local_created);
             foreach (var f in Directory.GetFiles(from))
                 c.FileSystem.AddFile(newf, f);
             foreach (var f in Directory.GetDirectories(from))
-                copydir(f,newf);
+                copydir(f, newf);
         }
 
 
