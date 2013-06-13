@@ -111,6 +111,7 @@ namespace YnetFS.FileSystem
         internal void SetHash(string hash)
         {
             Hash = hash;
+            Save();
         }
     }
 }
