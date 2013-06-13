@@ -241,25 +241,35 @@ namespace YnetFS
             {
                 foreach (RemoteClient it in e.NewItems)
                 {
-                    Log(LogLevel.Info, "Узел \"{0}\": {1}", it.Id, it.IsOnline ? "Connected" : "Disconnected");
                     if (it.IsOnline &&
                         Synchronized &&
                         Environment.IsNearest(it, this, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
                         it.Send(new SyncMessage());
                 }
-                if (State == ClientStates.Idle || State == ClientStates.Online)
-                {
-                    if (CheckReadyForOnline())
-                    {
-                        State = ClientStates.Online;
-                    }
-                    else
-                    {
-                        State = ClientStates.Idle;
-                    }
-                }
+            }
+            
+            var allItems = new List<RemoteClient>();
+            if (e.NewItems != null)
+                allItems.AddRange(e.NewItems.Cast<RemoteClient>());
+            if (e.OldItems != null)
+                allItems.AddRange(e.OldItems.Cast<RemoteClient>());
+
+            foreach (RemoteClient it in allItems)
+            {
+                Log(LogLevel.Info, "Узел \"{0}\": {1}", it.Id, it.IsOnline ? "Connected" : "Disconnected");
             }
 
+            if (State == ClientStates.Idle || State == ClientStates.Online)
+            {
+                if (CheckReadyForOnline())
+                {
+                    State = ClientStates.Online;
+                }
+                else
+                {
+                    State = ClientStates.Idle;
+                }
+            }
 
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add && State==ClientStates.Online)
             {

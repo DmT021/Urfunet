@@ -114,13 +114,15 @@ namespace YnetFS.InteractionEnvironment
 
         public override bool CheckClientLastOne(List<string> clientRemainingClients)
         {
-            var online = RemoteClients.GetOnline();
-            foreach (var item in clientRemainingClients)
-            {
-                if (!online.Any(x => x.Id == item))
-                    return false;
-            }
-            return true;
+            var online = RemoteClients.GetOnline().Select(x => x.Id);
+            //foreach (var item in clientRemainingClients)
+            //{
+            //    if (!online.Any(x => x.Id == item))
+            //        return false;
+            //}
+            //return true;
+
+            return clientRemainingClients.Count(x => online.Contains(x)) == clientRemainingClients.Count;
         }
     }
 
