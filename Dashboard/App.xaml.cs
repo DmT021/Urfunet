@@ -19,7 +19,7 @@ namespace Dashboard
         {
 
             var v = new MainWindow();
-            v.ShowDialog();
+                v.ShowDialog();
         }
         void foo()
         {

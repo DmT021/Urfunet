@@ -163,6 +163,7 @@ namespace YnetFS.FileSystem
         {
             _meta = Meta;
             _meta.ParenFile = this;
+            _meta.Save();
 
             if (OnFileEvent != null)
                 OnFileEvent(this, remote?FSObjectEvents.remote_changed:FSObjectEvents.local_changed);

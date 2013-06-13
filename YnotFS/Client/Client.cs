@@ -265,7 +265,11 @@ namespace YnetFS
                     if (it.IsOnline &&
                         Synchronized &&
                         Environment.IsNearest(this, it, RemoteClients.Where(x => x.Id != it.Id && x.IsOnline).ToList()))
+                    {
+                        foreach (var f in FileSystem.GetFileList())
+                            it.Send(new UpdateMetaInfoMessage(f));
                         it.Send(new SyncMessage());
+                    }
                 }
             }
             
