@@ -46,7 +46,7 @@ namespace YnetFS.InteractionEnvironment
             RemoteClients = new RemoteClientsManager(this);
             RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
             MessageRecived += OnMessageRecived;
-            new Thread(LoopTask) { Name = ParentClient.Id + ": LoolpTask" }.Start();
+            new Thread(LoopTask) { Name = ParentClient.Id + ": LoopTask" }.Start();
             new Thread(HeartBeat) { Name = ParentClient.Id + ": HeartBit" }.Start();
 
             BootStrap();
