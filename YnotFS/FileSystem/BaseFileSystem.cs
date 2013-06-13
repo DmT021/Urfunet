@@ -161,8 +161,8 @@ namespace YnetFS.FileSystem
 
         public virtual void OnFileEventHandled(BaseFile srcFile, FSObjectEvents eventtype)
         {
-            if (ReadOnly && eventtype == FSObjectEvents.remote_create)
-                throw new Exception("Can not create file on readonly mode");
+            //if (ReadOnly && eventtype == FSObjectEvents.remote_create)
+            //    throw new Exception("Can not create file on readonly mode");
 
 
             ///подписываемся на события каждого нового файла
@@ -185,7 +185,7 @@ namespace YnetFS.FileSystem
         /// <returns></returns>
         public BaseFile AddFile(BaseFolder ParentFolder, string pathToExistingfile)
         {
-            if (ReadOnly) return null;
+    //        if (ReadOnly) return null;
             try
             {
                 var f = ParentFolder.CreateFile(pathToExistingfile);
@@ -214,7 +214,7 @@ namespace YnetFS.FileSystem
         /// <returns></returns>
         public BaseFile AddFile(BaseFolder ParentFolder, FileMetaInfo MetaFile, FSObjectEvents FileEventType)
         {
-            if (ReadOnly) return null;
+         //   if (ReadOnly) return null;
 
             lock (ParentFolder.FS)
             {
@@ -245,7 +245,7 @@ namespace YnetFS.FileSystem
         /// <returns></returns>
         public BaseFolder CreateFolder(BaseFolder ParentFolder, string FolderName, FSObjectEvents CreationType)
         {
-            if (ReadOnly) return null;
+         //   if (ReadOnly) return null;
 
             if (!string.IsNullOrEmpty(FolderName) && FolderName.Length > 0 && FolderName != "\\" && FolderName[0] == '\\')
                 FolderName = FolderName.Substring(1);
@@ -295,7 +295,7 @@ namespace YnetFS.FileSystem
 
         public IFSObject Delete(IFSObject iFSObject, FSObjectEvents eventtype)
         {
-            if (ReadOnly) return null;
+       //     if (ReadOnly) return null;
 
             lock (RootDir.FS)
             {

@@ -55,21 +55,10 @@ namespace Dashboard
             foreach (var it in c.RemoteClients) RemoteClients.Add(it);
             c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
 
-            c.FileSystem.OnFileEvent += (s, de) =>
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    v_curdir = v_curdir;
-                }), null);
-            };
+            c.FileSystem.OnFileEvent += synchfiles;
 
-            c.FileSystem.OnFolderEvent += (s, de) =>
-            {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    v_curdir = v_curdir;
-                }), null);
-            };
+            c.FileSystem.OnFolderEvent += synchfolders;
+
             label1.Content = c.State.ToString() + "(" + (c.Synchronized ? "Synchronized" : "Not synchronized") + ")";
 
             real_curdir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\test";
@@ -78,6 +67,22 @@ namespace Dashboard
 
 
 
+        }
+
+        void synchfolders(BaseFolder srcFolder, FSObjectEvents eventtype)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                v_curdir = v_curdir;
+            }), null);
+        }
+
+        void synchfiles(BaseFile srcFile, FSObjectEvents eventtype)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                v_curdir = v_curdir;
+            }), null);
         }
         string _real_curdir = "";
         string real_curdir
@@ -269,14 +274,23 @@ namespace Dashboard
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             if (c.State != ClientStates.Offline)
+            {
                 c.ShutDown();
+            }
             else
             {
                 c.Up();
 
+                c.FileSystem.OnFileEvent += synchfiles;
+                c.FileSystem.OnFolderEvent += synchfolders;
+
                 RemoteClients.Clear();
                 foreach (var it in c.RemoteClients) RemoteClients.Add(it);
                 c.RemoteClients.CollectionChanged += RemoteClients_CollectionChanged;
+
+                v_curdir = c.FileSystem.RootDir;
+
+
                 N("Items");
             }
         }
