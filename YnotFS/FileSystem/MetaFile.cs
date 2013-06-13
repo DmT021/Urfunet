@@ -51,7 +51,6 @@ namespace YnetFS.FileSystem
                     Save();
                 }
             }
-
         }
 
         //[JsonProperty(IsReference = true, ItemIsReference = true, ReferenceLoopHandling = ReferenceLoopHandling.Serialize,ItemReferenceLoopHandling=ReferenceLoopHandling.Serialize)]

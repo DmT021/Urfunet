@@ -75,6 +75,8 @@ namespace YnetFS.FileSystem
 
             _meta = MetaFile;
             _meta.ParenFile = this;
+
+            MetaFile.Save();
         }
 
         public override string ToString()
