@@ -50,16 +50,23 @@ namespace YnetFS
                 if (Items.Contains(item))
                 {
                     var oldit = Items.FirstOrDefault(x => x.Id == item.Id);
-                    var oldind = Items.IndexOf(oldit);
-                    oldit.PropertyChanged -= item_PropertyChanged;
-                    Items.Remove(oldit);
-                    Items.Insert(oldind, item);
+
+                    item.CopyTo(oldit);
+
+                    //var oldind = Items.IndexOf(oldit);
+                    //oldit.PropertyChanged -= item_PropertyChanged;
+                    //item.PropertyChanged += item_PropertyChanged;
+                    //Items[oldind] = item;
+                    //Items.Remove(oldit);
+                    //Items.Insert(oldind, item);
+                    
+                    //item_PropertyChanged(item, null);
                 }
                 else
+                {
+                    item.PropertyChanged += item_PropertyChanged;
                     Items.Add(item);
-
-                item.PropertyChanged += item_PropertyChanged;
-                item_PropertyChanged(item, null);
+                }
             }
         }
         void Load()
@@ -91,7 +98,7 @@ namespace YnetFS
                     return;
                 }
 
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, sender));
+                //CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, sender));
 
             }
         }

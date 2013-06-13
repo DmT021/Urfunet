@@ -112,6 +112,16 @@ namespace YnetFS
             return hash;
         }
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        internal void CopyTo(RemoteClient oldit)
+        {
+            oldit.Env = Env;
+            oldit.Id = Id;
+            oldit.IsOnline = IsOnline;
+            oldit.Synchronized = syncronized;
+            
+        }
     }
 
     
