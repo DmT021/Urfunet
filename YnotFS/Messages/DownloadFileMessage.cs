@@ -26,6 +26,8 @@ namespace YnetFS.Messages
 
         public static Dictionary<string, EventWaitHandle> WaitHandles = new Dictionary<string, EventWaitHandle>();
 
+        public string specdir { get; set; }
+
         public DownloadFileMessage() { }
 
         public DownloadFileMessage(BaseFile baseFile, EventWaitHandle m)
@@ -38,12 +40,18 @@ namespace YnetFS.Messages
         public override void BeforeSend()
         {
             base.BeforeSend();
+            specdir = Guid.NewGuid().ToString();
             var path = new DirectoryInfo(Environment.ParentClient.FileSystem.RealPath).Parent.Parent.FullName;
+
+            var gpath = Path.Combine(path, "exchange", specdir);
+            if (!Directory.Exists(gpath))
+                Directory.CreateDirectory(gpath);
+
             path = Path.Combine(path, "exchange");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+
             ExchageFolder = new DirectoryInfo(path);
             count++;
+            
         }
 
         public override void OnRecived(RemoteClient from, Client to)
@@ -52,7 +60,7 @@ namespace YnetFS.Messages
             Environment.ParentClient.Log(LogLevel.Info, "Отправка файла {0} на узел {1}", RelativePath, from);
             base.OnRecived(from, to);
  
-            var newfilename = Path.Combine(ExchageFolder.FullName, srcFile.Name);
+            var newfilename = Path.Combine(ExchageFolder.FullName,specdir, srcFile.Name);
             if (File.Exists(newfilename))
                 File.Delete(newfilename);
 
@@ -60,17 +68,20 @@ namespace YnetFS.Messages
                     File.Copy(srcFile.RealPath, newfilename);
                // else
            //         from.Send(new SendFileMessage());
-            from.Send(new SendFileMessage(srcFile));
+            from.Send(new SendFileMessage(srcFile,specdir));
         }
     }
     //передача файла
     public class SendFileMessage : FsObjectOperationMessage
     {
 
+        public string specdir { get; set; }
 
 
         public SendFileMessage() { }
-        public SendFileMessage(BaseFile baseFile) : base(baseFile) { }
+        public SendFileMessage(BaseFile baseFile,string specdir) : base(baseFile) {
+            this.specdir = specdir;
+        }
 
 
         public override void OnRecived(RemoteClient from, Client to)
@@ -78,8 +89,9 @@ namespace YnetFS.Messages
             base.OnRecived(from, to);
             if (srcFile == null) throw new Exception("Удаленный клиент сообщает что такого файла нет ({0})");
             Environment.ParentClient.Log(LogLevel.Info, "Загружен файл {0} с узла {1}", RelativePath, from);
-            var tmpfile = Path.Combine(DownloadFileMessage.ExchageFolder.FullName, srcFile.Name);
+            var tmpfile = Path.Combine(DownloadFileMessage.ExchageFolder.FullName,specdir, srcFile.Name);
             srcFile.PushData(tmpfile);
+            Directory.Delete(Path.Combine(DownloadFileMessage.ExchageFolder.FullName, specdir), true);
 
             DownloadFileMessage.count--;
             if (DownloadFileMessage.count == 0)
